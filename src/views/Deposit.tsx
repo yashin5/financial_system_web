@@ -1,21 +1,25 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react'
-import { Container, Form, Button } from 'reactstrap'
+import { Col, Container, Form, Button } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
 
+
 interface State {
     email: string,
-    value: string
+    value: string,
+    currency: string,
+    currencies: Array<string>
 };
 
 interface Props{
     new_balance: Function,
-}
+    currencies: Array<string>
+};
 
-export default class Withdraw extends Component<Props, State> {
+export default class Deposit extends Component<Props, State> {
     constructor(props: Props){
         super(props);
-        this.state = {email: "", value: ""}
+        this.state = {email: "", value: "", currency: "", currencies: this.props.currencies}
     };
 
     email = (event: ChangeEvent<HTMLInputElement>) =>{
@@ -26,13 +30,17 @@ export default class Withdraw extends Component<Props, State> {
         this.setState({value: event.target.value})
     };
 
-    withdraw = (event: FormEvent<HTMLFormElement>) => {
+    currency = (event: ChangeEvent<HTMLInputElement>) => {
+        this.setState({currency: event.target.value})
+    }
+
+    deposit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         this.props.new_balance("1000")
     }
 
     render(){
-        const { email, value } = this.state
+        const { email, value, currency, currencies } = this.state
         const formOne = [{
             label: "Email",
             value: email,
@@ -45,14 +53,26 @@ export default class Withdraw extends Component<Props, State> {
             onChange: this.value,
             type: "text"
         }]
+        const formTwo = [{
+            label: "Currency",
+            value: currency,
+            onChange: this.currency,
+            type: "select",
+            options: currencies 
+        }]
         return(
             <Container>
                 <HeaderFunctions>
-                    <h1>Withdraw </h1>
+                    <h1>Deposit </h1>
                 </HeaderFunctions>
-                <Form onSubmit={this.withdraw}>
-                    <FormContainer>
+                <Form onSubmit={this.deposit}>
+                    <Col md="6">
                         {Forms({forms: formOne})}
+                    </Col>
+                    <FormContainer>
+                        <Col md="6">
+                            {Forms({forms: formTwo})}
+                        </Col>
                     </FormContainer>
                     <ButtonContainer>
                         <Button color="success" size="sm">Do!</Button>
@@ -75,10 +95,8 @@ const ButtonContainer = styled.div`
     justify-content: center;
     width: 530px ;
 `
-const FormContainer = styled(Container)`
+const FormContainer = styled.div`
     margin-top: 25px;
-    width: 600px;
-    display: flex;
-    justify-content: left;
-    align-items: center;
+    width: inherit;
+    align-items: left;
 `
