@@ -2,6 +2,7 @@ import React, {Component, FormEvent, ChangeEvent} from 'react'
 import { Col, Container, Form, Button } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
+import HeaderFunction from '../components/HeaderFunction'
 
 interface State {
     value: string
@@ -39,9 +40,7 @@ export default class Withdraw extends Component<Props, State> {
 
         return(
             <Container>
-                <HeaderFunctions>
-                    <h1>Withdraw </h1>
-                </HeaderFunctions>
+                <HeaderFunction header="Withdraw" />
                 <Form onSubmit={this.withdraw}>
                     <Col md="6">
                         {Forms({forms: formOne})}
