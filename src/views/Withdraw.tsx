@@ -1,10 +1,9 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react'
-import { Container, Form, Button } from 'reactstrap'
+import { Col, Container, Form, Button } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
 
 interface State {
-    email: string,
     value: string
 };
 
@@ -15,11 +14,7 @@ interface Props{
 export default class Withdraw extends Component<Props, State> {
     constructor(props: Props){
         super(props);
-        this.state = {email: "", value: ""}
-    };
-
-    email = (event: ChangeEvent<HTMLInputElement>) =>{
-        this.setState({email: event.target.value})
+        this.state = { value: ""}
     };
 
     value = (event: ChangeEvent<HTMLInputElement>) =>{
@@ -32,28 +27,25 @@ export default class Withdraw extends Component<Props, State> {
     }
 
     render(){
-        const { email, value } = this.state
-        const formOne = [{
-            label: "Email",
-            value: email,
-            onChange: this.email,
-            type: "text"
-        },
-        {
-            label: "Value",
-            value: value,
-            onChange: this.value,
-            type: "text"
-        }]
+        const { value } = this.state
+        const formOne = [
+            {
+                label: "Value",
+                value: value,
+                onChange: this.value,
+                type: "text"
+            }
+        ];
+
         return(
             <Container>
                 <HeaderFunctions>
                     <h1>Withdraw </h1>
                 </HeaderFunctions>
                 <Form onSubmit={this.withdraw}>
-                    <FormContainer>
+                    <Col md="6">
                         {Forms({forms: formOne})}
-                    </FormContainer>
+                    </Col>
                     <ButtonContainer>
                         <Button color="success" size="sm">Do!</Button>
                     </ButtonContainer>
@@ -65,6 +57,7 @@ export default class Withdraw extends Component<Props, State> {
 
 const HeaderFunctions = styled.div`
     margin-top: 5px;
+    margin-bottom: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,11 +67,4 @@ const ButtonContainer = styled.div`
     display: flex;
     justify-content: center;
     width: 530px ;
-`
-const FormContainer = styled(Container)`
-    margin-top: 25px;
-    width: 600px;
-    display: flex;
-    justify-content: left;
-    align-items: center;
 `

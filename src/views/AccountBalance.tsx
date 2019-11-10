@@ -1,4 +1,5 @@
 import React from 'react'
+import {Col, Row} from 'reactstrap'
 import styled from 'styled-components'
 
 interface Props{
@@ -7,10 +8,14 @@ interface Props{
 
 const AccountBalance = (props: Props) => {
     return(
-            <div style={accountBalanceStyle}>
-                <AccountBalanceMessage>Account balance:</AccountBalanceMessage>
-                <Balance>{props.balance}</Balance>
-            </div>
+            <Row >
+                <Col md="1.1">
+                    <AccountBalanceMessage>Account balance:</AccountBalanceMessage>
+                </Col>
+                <Col md="6">
+                    <Balance>{props.balance}</Balance>
+                </Col>
+            </Row>
     );
 };
 
@@ -24,9 +29,3 @@ const Balance = styled.p`
     font-size: 1rem;
     color: green
 `
-const accountBalanceStyle = {
-    marginTop: "15px",
-    display: "flex",
-    justifyContent: "space-between",
-    width: "250px"
-}

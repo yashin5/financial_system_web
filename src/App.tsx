@@ -7,6 +7,7 @@ const App: React.FC = () => {
       <BrowserRouter>
         <Switch>
           <Route path="/withdraw" component={Dashboard} />
+          <Route path="/deposit" component={Dashboard} />
         </Switch>
       </BrowserRouter>
   );
