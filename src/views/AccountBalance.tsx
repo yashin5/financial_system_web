@@ -29,4 +29,4 @@ const accountBalanceStyle = {
     display: "flex",
     justifyContent: "space-between",
     width: "250px"
-    }
+}

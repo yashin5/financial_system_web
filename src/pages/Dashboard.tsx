@@ -19,7 +19,15 @@ interface Props{
 export default class Dashboard extends Component<Props,State>{
     constructor(props: State){
         super(props);
-        this.state = {email: "ysantos@stone.com.br", balance: "10.000221"}
+        this.state = {email: "", balance: ""}
+    };
+
+    componentDidMount = () =>{
+        this.setState({email: "ysantos@stone.com.br", balance: "10.000221"})
+    };
+
+    balance = (new_balance: string) => {
+        this.setState({balance: new_balance})
     };
 
     render(){
@@ -32,7 +40,7 @@ export default class Dashboard extends Component<Props,State>{
                     <NavigationFunctions/>     
                     <AccountBalance balance={balance} />           
                         <Switch>
-                            <Route exact path="/withdraw" component={Withdraw} />
+                            <Route exact path="/withdraw" component={() => <Withdraw new_balance={this.balance}/>} />
                         </Switch>                    
                 </Container>
             </BrowserRouter>

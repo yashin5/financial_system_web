@@ -8,8 +8,12 @@ interface State {
     value: string
 };
 
-export default class Withdraw extends Component<{},State> {
-    constructor(props: State){
+interface Props{
+    new_balance: Function,
+}
+
+export default class Withdraw extends Component<Props, State> {
+    constructor(props: Props){
         super(props);
         this.state = {email: "", value: ""}
     };
@@ -24,6 +28,7 @@ export default class Withdraw extends Component<{},State> {
 
     withdraw = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        this.props.new_balance("1000")
     }
 
     render(){
