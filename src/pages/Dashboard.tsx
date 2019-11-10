@@ -4,6 +4,7 @@ import { Container } from 'reactstrap'
 import Header from '../views/Header'
 import NavigationFunctions from '../views/NavigationFunctions'
 import AccountBalance from '../views/AccountBalance'
+import Withdraw from '../views/Withdraw'
 
 
 interface State{
@@ -31,7 +32,7 @@ export default class Dashboard extends Component<Props,State>{
                     <NavigationFunctions/>     
                     <AccountBalance balance={balance} />           
                         <Switch>
-                            {/* <Route exact path="/candidatos" component={Candidates} /> */}
+                            <Route exact path="/withdraw" component={Withdraw} />
                         </Switch>                    
                 </Container>
             </BrowserRouter>
