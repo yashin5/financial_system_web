@@ -6,6 +6,8 @@ import NavigationFunctions from '../views/NavigationFunctions'
 import AccountBalance from '../views/AccountBalance'
 import Withdraw from '../views/Withdraw'
 import Deposit from '../views/Deposit'
+import Transfer from '../views/Transfer'
+
 
 
 interface State{
@@ -44,6 +46,7 @@ export default class Dashboard extends Component<Props,State>{
                         <Switch>
                             <Route exact path="/withdraw" component={() => <Withdraw new_balance={this.balance}/>} />
                             <Route exact path="/deposit" component={() => <Deposit currencies={currencies} new_balance={this.balance}/>} />
+                            <Route exact path="/transfer" component={() => <Transfer new_balance={this.balance}/>} />
                         </Switch>                    
                 </Container>
             </BrowserRouter>
