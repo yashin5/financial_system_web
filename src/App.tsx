@@ -6,7 +6,7 @@ const App: React.FC = () => {
   return (
       <BrowserRouter>
         <Switch>
-          <Route path="/home" component={Dashboard} />
+          <Route path="/withdraw" component={Dashboard} />
         </Switch>
       </BrowserRouter>
   );

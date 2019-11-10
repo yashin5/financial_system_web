@@ -28,7 +28,7 @@ interface Form {
     onChange: Function,
     value: any,
     label: string
-    options?: Array<any>
+    options?: Array<string>
 };
 
 interface Props {
@@ -37,21 +37,22 @@ interface Props {
 
 const Forms = (props: Props) =>{
     const forms = (
-        
-            props.forms.map((form: any) => (        
-                <RowContainer>
+        <RowContainer >
+           { 
+                props.forms.map((form: any) => (        
                     <Col key={form.label} md="4" >
-                        <FormGroup>
+                        <FormGroup >
                             <Label>{form.label}</Label>
                             {inputFieldFormat(form)}            
                         </FormGroup>
                     </Col>       
-                </RowContainer>
-            ))
+                ))
+            }
+        </RowContainer>
         
-    )
+    );
     return forms
-}
+};
 
 export default Forms
 
