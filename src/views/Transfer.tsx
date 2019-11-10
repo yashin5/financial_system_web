@@ -56,7 +56,7 @@ export default class Deposit extends Component<Props, State> {
                         {Forms({forms: formOne})}
                     </Col>
                     <ButtonContainer>
-                        <Button color="success" size="sm">Do!</Button>
+                        <Button type="submit" color="success" size="sm">Do!</Button>
                     </ButtonContainer>
                 </Form>
             </Container>
@@ -64,14 +64,6 @@ export default class Deposit extends Component<Props, State> {
     };
 };
 
-const HeaderFunctions = styled.div`
-    margin-top: 5px;
-    margin-bottom: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 530px ;
-`;
 
 const ButtonContainer = styled.div`
     display: flex;

@@ -9,7 +9,8 @@ const App: React.FC = () => {
           <Route path="/home" component={Dashboard} />
           <Route path="/withdraw" component={Dashboard} />
           <Route path="/deposit" component={Dashboard} />
-          <Route path="/Transfer" component={Dashboard} />
+          <Route path="/transfer" component={Dashboard} />
+          <Route path="/split" component={Dashboard} />
         </Switch>
       </BrowserRouter>
   );
