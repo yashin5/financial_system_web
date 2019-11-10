@@ -74,7 +74,7 @@ export default class Deposit extends Component<Props, State> {
                         </Col>
                     </FormContainer>
                     <ButtonContainer>
-                        <Button color="success" size="sm">Do!</Button>
+                        <Button type="submit" color="success" size="sm">Do!</Button>
                     </ButtonContainer>
                 </Form>
             </Container>

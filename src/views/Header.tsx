@@ -33,6 +33,7 @@ const Logout = styled.a`
 const HeaderContainer = styled(Container)`
     margin-top: 25px;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     border-bottom: 1px solid black;
 `;

@@ -7,6 +7,8 @@ import AccountBalance from '../views/AccountBalance'
 import Withdraw from '../views/Withdraw'
 import Deposit from '../views/Deposit'
 import Transfer from '../views/Transfer'
+import Split from '../views/Split'
+
 
 
 
@@ -47,6 +49,7 @@ export default class Dashboard extends Component<Props,State>{
                             <Route exact path="/withdraw" component={() => <Withdraw new_balance={this.balance}/>} />
                             <Route exact path="/deposit" component={() => <Deposit currencies={currencies} new_balance={this.balance}/>} />
                             <Route exact path="/transfer" component={() => <Transfer new_balance={this.balance}/>} />
+                            <Route exact path="/split" component={() => <Split  new_balance={this.balance}/>} />
                         </Switch>                    
                 </Container>
             </BrowserRouter>

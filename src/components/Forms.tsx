@@ -6,21 +6,24 @@ import styled from 'styled-components'
 
 const inputFieldFormat = (formProps: any) =>{
     if(formProps.type === "text"){
-        return <Input onChange={formProps.onChange} value={formProps.value} type="text"/>
+        return <Input onChange={formProps.onChange} value={formProps.value} type={formProps.type}/>
+    }
+    else if(formProps.type === "email"){
+        return <Input onChange={formProps.onChange} value={formProps.value} type={formProps.type}/>
     }
     else if(formProps.type === "date"){
-        return <Input onChange={formProps.onChange} value={formProps.value} type="date"/>
+        return <Input onChange={formProps.onChange} value={formProps.value} type={formProps.type}/>
     }
     else if(formProps.type === "select"){
         return (
-            <Input onChange={formProps.onChange} value={formProps.value} type="select">
+            <Input onChange={formProps.onChange} value={formProps.value} type={formProps.type}>
                 {formProps.options.map((option: string) =>(<option>{option}</option>))}
             </Input>   
         )
     }
     else if(formProps.type === "textarea"){
-        return <Input  onChange={formProps.onChange} value={formProps.value}  type="textarea" />
-    }
+        return <Input  onChange={formProps.onChange} value={formProps.value}  type={formProps.type} />
+    };
 };
 
 interface Form {

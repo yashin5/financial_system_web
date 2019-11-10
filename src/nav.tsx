@@ -8,12 +8,12 @@ const nav =[
         path: "/deposit"
     },
     {
-        label: "transfer",
+        label: "Transfer",
         path: "/transfer"
     },
     {
         label: "Split transfer",
-        path: "/split_transfer"
+        path: "/split"
     },
     {
         label: "Contacts",

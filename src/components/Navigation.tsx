@@ -16,7 +16,7 @@ const Navigation = (props: Props) => {
     return (
         <NavigationContainer>
             {props.navigation.map((navigationItem: NavigationItem) =>(
-                <NavLinkStyled to={navigationItem.path}>{navigationItem.label}</NavLinkStyled>
+                <NavLinkStyled key={navigationItem.path} to={navigationItem.path}>{navigationItem.label}</NavLinkStyled>
             ))}
         </NavigationContainer>
     )
@@ -35,4 +35,5 @@ const NavLinkStyled = styled(NavLink)`
 const NavigationContainer = styled(Container)`
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
 `;

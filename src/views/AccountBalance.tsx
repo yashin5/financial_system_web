@@ -8,6 +8,7 @@ interface Props{
 
 const AccountBalance = (props: Props) => {
     return(
+        <AccountBalanceContainer>
             <Row >
                 <Col md="1.1">
                     <AccountBalanceMessage>Account balance:</AccountBalanceMessage>
@@ -16,11 +17,15 @@ const AccountBalance = (props: Props) => {
                     <Balance>{props.balance}</Balance>
                 </Col>
             </Row>
+        </AccountBalanceContainer>
     );
 };
 
 export default AccountBalance
 
+const AccountBalanceContainer = styled.div`
+    margin-top: 15px;
+`
 const AccountBalanceMessage = styled.p`
     font-size: 1rem;
     color: black
