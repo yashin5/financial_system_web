@@ -13,10 +13,10 @@ const Header = (props: Props) =>{
     };
 
     return (
-        <NavigationContainer>
+        <HeaderContainer>
             <p>{props.email}</p>
             <Logout onClick={logout} href='#'>Logout</Logout>
-        </NavigationContainer>
+        </HeaderContainer>
     );
 };
 
@@ -25,12 +25,13 @@ export default Header
 const Logout = styled.a`
     color: black;
     &:hover{
-        color: black;
+        color: #c6c6c6;
         opacity: 0.5;
     }
 `;
 
-const NavigationContainer = styled(Container)`
+const HeaderContainer = styled(Container)`
+    margin-top: 25px;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid black;
