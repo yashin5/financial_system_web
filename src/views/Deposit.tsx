@@ -2,6 +2,7 @@ import React, {Component, FormEvent, ChangeEvent} from 'react'
 import { Col, Container, Form, Button } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
+import HeaderFunction from '../components/HeaderFunction'
 
 
 interface State {
@@ -62,9 +63,7 @@ export default class Deposit extends Component<Props, State> {
         }]
         return(
             <Container>
-                <HeaderFunctions>
-                    <h1>Deposit </h1>
-                </HeaderFunctions>
+                <HeaderFunction header="Deposit" />
                 <Form onSubmit={this.deposit}>
                     <Col md="6">
                         {Forms({forms: formOne})}
@@ -83,14 +82,7 @@ export default class Deposit extends Component<Props, State> {
     };
 };
 
-const HeaderFunctions = styled.div`
-    margin-top: 5px;
-    display: flex;
-    margin-bottom: 25px;
-    align-items: center;
-    justify-content: center;
-    width: 530px ;
-`
+
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: center;

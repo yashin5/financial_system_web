@@ -2,6 +2,7 @@ import React, {Component, FormEvent, ChangeEvent} from 'react'
 import { Col, Container, Form, Button } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
+import HeaderFunction from '../components/HeaderFunction'
 
 
 interface State {
@@ -49,9 +50,7 @@ export default class Deposit extends Component<Props, State> {
 
         return(
             <Container>
-                <HeaderFunctions>
-                    <h1>Transfer </h1>
-                </HeaderFunctions>
+                <HeaderFunction header="Transfer" />
                 <Form onSubmit={this.transfer}>
                     <Col md="6">
                         {Forms({forms: formOne})}
