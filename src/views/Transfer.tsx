@@ -1,13 +1,15 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react'
-import { Col, Container, Form, Button } from 'reactstrap'
+import { Col, Container, Form } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
+import Buttons from '../components/Buttons'
 
 
 interface State {
     email: string,
     value: string,
+    buttonLoad: boolean,
 };
 
 interface Props{
@@ -17,7 +19,11 @@ interface Props{
 export default class Deposit extends Component<Props, State> {
     constructor(props: Props){
         super(props);
-        this.state = {email: "", value: ""}
+        this.state = {
+            email: "",
+            value: "",
+            buttonLoad: false
+        };
     };
 
     email = (event: ChangeEvent<HTMLInputElement>) =>{
@@ -34,7 +40,7 @@ export default class Deposit extends Component<Props, State> {
     }
 
     render(){
-        const { email, value } = this.state
+        const { email, value, buttonLoad} = this.state
         const formOne = [{
             label: "Email",
             value: email,
@@ -56,7 +62,9 @@ export default class Deposit extends Component<Props, State> {
                         {Forms({forms: formOne})}
                     </Col>
                     <ButtonContainer>
-                        <Button type="submit" color="success" size="sm">Do!</Button>
+                        <Buttons buttonLoad={buttonLoad} value="Do!" 
+                            type="submit" color="success" size="sm" 
+                        />
                     </ButtonContainer>
                 </Form>
             </Container>

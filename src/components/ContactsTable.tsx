@@ -36,7 +36,7 @@ const ContactsTable = (props: Props) => {
                 }
             </tbody>
         </Table>
-    )
-}
+    );
+};
 
 export default ContactsTable

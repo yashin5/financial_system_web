@@ -1,9 +1,10 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react'
-import { Col, Container, Form, Button } from 'reactstrap'
+import { Col, Container, Form } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
 import SplitTable from '../components/SplitTable'
+import Buttons from '../components/Buttons'
 
 
 interface SplitItem {
@@ -26,7 +27,13 @@ interface Props{
 export default class Split extends Component<Props, State> {
     constructor(props: Props){
         super(props);
-        this.state = {email: "", value: "", percent: "", split_list: [], buttonLoad: false}
+        this.state = {
+            email: "",
+            value: "",
+            percent: "",
+            split_list: [],
+            buttonLoad: false
+        };
     };
 
     email = (event: ChangeEvent<HTMLInputElement>) =>{
@@ -67,8 +74,9 @@ export default class Split extends Component<Props, State> {
         })
     };
 
-    addItemToSplitTable = (email: string, percent: string) => {
-        const { split_list } = this.state;
+    addItemToSplitTable = () => {
+        console.log("oi")
+        const { split_list, email, percent } = this.state;
         const new_item = { email, percent};
 
         this.setState({split_list: [...split_list, new_item]})
@@ -84,7 +92,7 @@ export default class Split extends Component<Props, State> {
     };
 
     render(){
-        const { email, value, percent, split_list} = this.state
+        const { email, value, percent, split_list, buttonLoad} = this.state
         const formOne = [{
             label: "Email",
             value: email,
@@ -118,8 +126,13 @@ export default class Split extends Component<Props, State> {
                         </Col>
                         <ButtonContainer>
                             <ButtonContainerTwo>
-                                <Button type="submit" color="success" size="sm">Do!</Button>
-                                <Button type="button" onClick={() => this.addItemToSplitTable(email, percent)} color="secondary" size="sm">Add to split</Button>
+                                <Buttons type="submit" color="success" 
+                                    size="sm" buttonLoad={buttonLoad} value="Do!"
+                                />
+                                <Buttons type="button" color="secondary" 
+                                    size="sm" buttonLoad={buttonLoad} value="Add to split"
+                                    onClick={this.addItemToSplitTable}
+                                />
                             </ButtonContainerTwo>
                         </ButtonContainer>
                     </Form>
