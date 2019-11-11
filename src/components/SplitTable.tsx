@@ -27,7 +27,7 @@ const SplitTable = (props: Props) => {
             </thead>
             <tbody>
                 {
-                    props.split_list.map((splitItem: SplitItem, index: number) =>(
+                    props.split_list.map((splitItem: SplitItem) =>(
                         <tr key={splitItem.email} onDoubleClick={() => editItem(splitItem)}>
                             <td>{splitItem.email}</td>
                             <td>{splitItem.percent}</td>
