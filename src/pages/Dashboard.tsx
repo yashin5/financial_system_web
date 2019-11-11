@@ -30,7 +30,12 @@ interface Props{
 export default class Dashboard extends Component<Props,State>{
     constructor(props: State){
         super(props);
-        this.state = {email: "", balance: "", currencies: [], contact_list:[]}
+        this.state = {
+            email: "",
+            balance: "",
+            currencies: [],
+            contact_list:[]
+        };
     };
 
     componentDidMount = () =>{
@@ -42,16 +47,18 @@ export default class Dashboard extends Component<Props,State>{
                 nickname: "Yashin Sants",
                 email: "ysantos@gmail.com",
             }]
-        })
+        });
     };
 
     balance = (new_balance: string) => {
-        this.setState({balance: new_balance})
+        this.setState({balance: new_balance});
     };
 
     createNewContact = (new_contact: Contact) => {
-        const { contact_list } = this.state
-        const verify_if_contact_already_exist = contact_list.filter(contact => contact.email !== new_contact.email)
+        const { contact_list } = this.state;
+        const verify_if_contact_already_exist = contact_list.filter(contact => (
+            contact.email !== new_contact.email
+        ));
         const new_contact_list = [...verify_if_contact_already_exist, new_contact];
         
         this.setState({contact_list: new_contact_list});
@@ -66,7 +73,6 @@ export default class Dashboard extends Component<Props,State>{
                     <Header email={email}/>    
                     <NavigationFunctions/>     
                     <AccountBalance balance={balance} />  
-                    <div style={{display: "flex"}}>
                         <Switch>
                             <Route exact path="/withdraw" component={() => <Withdraw new_balance={this.balance}/>} />
                             <Route exact path="/deposit" component={() => <Deposit currencies={currencies} new_balance={this.balance}/>} />
@@ -74,9 +80,8 @@ export default class Dashboard extends Component<Props,State>{
                             <Route exact path="/split" component={() => <Split  new_balance={this.balance}/>} />
                             <Route exact path="/contacts" component={() => <AddContact create_contact={this.createNewContact} contact_list={contact_list} />} />
                         </Switch>
-                    </div>
                 </Container>
             </BrowserRouter>
-        )
-    }        
-}
+        );
+    };   
+};

@@ -1,9 +1,10 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react'
-import { Col, Container, Form, Button } from 'reactstrap'
+import { Col, Container, Form } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
 import ContactsTable from '../components/ContactsTable';
+import Buttons from '../components/Buttons'
 
 
 
@@ -15,6 +16,7 @@ interface Contact {
 interface State {
     email: string,
     nickname: string,
+    buttonLoad: boolean,
 };
 
 interface Props{
@@ -25,7 +27,11 @@ interface Props{
 export default class AddContact extends Component<Props, State> {
     constructor(props: Props){
         super(props);
-        this.state = { email: "", nickname: ""}
+        this.state = { 
+            email: "",
+            nickname: "",
+            buttonLoad: false
+        };
     };
 
     email = (event: ChangeEvent<HTMLInputElement>) =>{
@@ -48,7 +54,7 @@ export default class AddContact extends Component<Props, State> {
     }
 
     render(){
-        const { email, nickname } = this.state
+        const { email, nickname, buttonLoad } = this.state
         const { contact_list } = this.props
         const formOne = [
             {
@@ -76,8 +82,12 @@ export default class AddContact extends Component<Props, State> {
                     </Col>
                     <ButtonContainer>
                         <ButtonContainerTwo>
-                            <Button type="submit" color="success" size="sm">Create contact</Button>
-                            <Button type="button" color="success" size="sm">Update contact</Button>
+                            <Buttons buttonLoad={buttonLoad} type="submit" color="success"
+                                size="sm" value="Create contact" 
+                            />
+                            <Buttons buttonLoad={buttonLoad} value="Update contact"
+                                type="button" color="secondary" size="sm"
+                            />
                         </ButtonContainerTwo>
                     </ButtonContainer>
                 </Form>

@@ -1,11 +1,13 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react'
-import { Col, Container, Form, Button } from 'reactstrap'
+import { Col, Container, Form } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
+import Buttons from '../components/Buttons'
 
 interface State {
-    value: string
+    value: string,
+    buttonLoad: boolean,
 };
 
 interface Props{
@@ -15,7 +17,10 @@ interface Props{
 export default class Withdraw extends Component<Props, State> {
     constructor(props: Props){
         super(props);
-        this.state = { value: ""}
+        this.state = { 
+            value: "",
+            buttonLoad: false
+        };
     };
 
     value = (event: ChangeEvent<HTMLInputElement>) =>{
@@ -28,7 +33,7 @@ export default class Withdraw extends Component<Props, State> {
     }
 
     render(){
-        const { value } = this.state
+        const { value, buttonLoad } = this.state
         const formOne = [
             {
                 label: "Value",
@@ -46,7 +51,9 @@ export default class Withdraw extends Component<Props, State> {
                         {Forms({forms: formOne})}
                     </Col>
                     <ButtonContainer>
-                        <Button type="submit" color="success" size="sm">Do!</Button>
+                        <Buttons buttonLoad={buttonLoad} value="Do!" 
+                            type="submit" color="success" size="sm" 
+                        />
                     </ButtonContainer>
                 </Form>
             </Container>

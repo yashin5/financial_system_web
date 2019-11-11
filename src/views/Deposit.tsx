@@ -1,15 +1,17 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react'
-import { Col, Container, Form, Button } from 'reactstrap'
+import { Col, Container, Form } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
+import Buttons from '../components/Buttons'
 
 
 interface State {
     email: string,
     value: string,
     currency: string,
-    currencies: Array<string>
+    currencies: Array<string>,
+    buttonLoad: boolean,
 };
 
 interface Props{
@@ -20,7 +22,13 @@ interface Props{
 export default class Deposit extends Component<Props, State> {
     constructor(props: Props){
         super(props);
-        this.state = {email: "", value: "", currency: "", currencies: this.props.currencies}
+        this.state = {
+            email: "",
+            value: "",
+            currency: "",
+            currencies: this.props.currencies,
+            buttonLoad: false
+        };
     };
 
     email = (event: ChangeEvent<HTMLInputElement>) =>{
@@ -41,7 +49,7 @@ export default class Deposit extends Component<Props, State> {
     }
 
     render(){
-        const { email, value, currency, currencies } = this.state
+        const { email, value, currency, currencies, buttonLoad} = this.state
         const formOne = [{
             label: "Email",
             value: email,
@@ -53,14 +61,16 @@ export default class Deposit extends Component<Props, State> {
             value: value,
             onChange: this.value,
             type: "text"
-        }]
+        }];
+
         const formTwo = [{
             label: "Currency",
             value: currency,
             onChange: this.currency,
             type: "select",
             options: currencies 
-        }]
+        }];
+
         return(
             <Container>
                 <HeaderFunction header="Deposit" />
@@ -74,7 +84,7 @@ export default class Deposit extends Component<Props, State> {
                         </Col>
                     </FormContainer>
                     <ButtonContainer>
-                        <Button type="submit" color="success" size="sm">Do!</Button>
+                        <Buttons buttonLoad={buttonLoad} type="submit" color="success" size="sm" value="Do!"/>
                     </ButtonContainer>
                 </Form>
             </Container>
@@ -87,9 +97,10 @@ const ButtonContainer = styled.div`
     display: flex;
     justify-content: center;
     width: 530px ;
-`
+`;
+
 const FormContainer = styled.div`
     margin-top: 25px;
     width: inherit;
     align-items: left;
-`
+`;
