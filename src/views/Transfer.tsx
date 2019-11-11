@@ -52,7 +52,7 @@ export default class Deposit extends Component<Props, State> {
             value: value,
             onChange: this.value,
             type: "text"
-        }]
+        }];
 
         return(
             <Container>

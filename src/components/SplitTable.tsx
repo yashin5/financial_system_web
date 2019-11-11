@@ -36,7 +36,7 @@ const SplitTable = (props: Props) => {
                 }
             </tbody>
         </Table>
-    )
-}
+    );
+};
 
 export default SplitTable

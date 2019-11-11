@@ -6,11 +6,11 @@ import styled from 'styled-components'
 interface NavigationItem{
     label: string,
     path: string,
-}
+};
 
 interface Props{
     navigation: Array<NavigationItem>
-}
+};
 
 const Navigation = (props: Props) => {
     return (
@@ -19,8 +19,8 @@ const Navigation = (props: Props) => {
                 <NavLinkStyled key={navigationItem.path} to={navigationItem.path}>{navigationItem.label}</NavLinkStyled>
             ))}
         </NavigationContainer>
-    )
-}
+    );
+};
 
 export default Navigation
 

@@ -8,7 +8,7 @@ const NavigationFunctions = () => {
         <Container>
             <Navigation navigation={nav} />
         </Container>
-    )
-}
+    );
+};
 
 export default NavigationFunctions

@@ -41,12 +41,12 @@ export default class Deposit extends Component<Props, State> {
 
     currency = (event: ChangeEvent<HTMLInputElement>) => {
         this.setState({currency: event.target.value})
-    }
+    };
 
     deposit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         this.props.new_balance("1000")
-    }
+    };
 
     render(){
         const { email, value, currency, currencies, buttonLoad} = this.state

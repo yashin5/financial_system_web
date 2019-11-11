@@ -25,12 +25,14 @@ export default AccountBalance
 
 const AccountBalanceContainer = styled.div`
     margin-top: 15px;
-`
+`;
+
 const AccountBalanceMessage = styled.p`
     font-size: 1rem;
     color: black
-`
+`;
+
 const Balance = styled.p`
     font-size: 1rem;
     color: green
-`
+`;

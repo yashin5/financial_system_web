@@ -71,7 +71,7 @@ export default class Split extends Component<Props, State> {
                 headers,
                 body})
             this.props.new_balance("1000");
-        })
+        });
     };
 
     addItemToSplitTable = () => {
@@ -104,13 +104,15 @@ export default class Split extends Component<Props, State> {
             value: percent,
             onChange: this.percent,
             type: "text"
-        }]
+        }];
+
         const formTwo = [{
             label: "Value",
             value: value,
             onChange: this.value,
             type: "text",
-        }]
+        }];
+        
         return(
             <SplitContainer>
                 <SplitContainerDelimiter >
