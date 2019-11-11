@@ -123,8 +123,11 @@ export default class Split extends Component<Props, State> {
                             </ButtonContainerTwo>
                         </ButtonContainer>
                     </Form>
-                    <Col md="2">
-                        <SplitTable rmTableItem={this.rmItemToSplitTable} split_list={split_list}/>
+                    <Col md="7">
+                        {
+                            split_list.length > 0 && 
+                            <SplitTable rmTableItem={this.rmItemToSplitTable} split_list={split_list}/>
+                        }
                     </Col>
                 </SplitContainerDelimiter>
             </SplitContainer>

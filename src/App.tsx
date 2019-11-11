@@ -11,6 +11,7 @@ const App: React.FC = () => {
           <Route path="/deposit" component={Dashboard} />
           <Route path="/transfer" component={Dashboard} />
           <Route path="/split" component={Dashboard} />
+          <Route path="/contacts" component={Dashboard} />
         </Switch>
       </BrowserRouter>
   );
