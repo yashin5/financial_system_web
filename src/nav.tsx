@@ -19,6 +19,6 @@ const nav =[
         label: "Contacts",
         path: "/contacts"
     }
-]
+];
 
 export default nav

@@ -35,15 +35,15 @@ export default class AddContact extends Component<Props, State> {
     };
 
     email = (event: ChangeEvent<HTMLInputElement>) =>{
-        this.doEmail(event.target.value)
+        this.doEmail(event.target.value);
     };
 
     doEmail = (email: string) => {
-        this.setState({ email })
+        this.setState({ email });
     };
 
     nickname = (event: ChangeEvent<HTMLInputElement>) =>{
-        this.setState({nickname: event.target.value})
+        this.setState({nickname: event.target.value});
     };
 
     contacts = (event: FormEvent<HTMLFormElement>) => {
@@ -51,11 +51,11 @@ export default class AddContact extends Component<Props, State> {
         const { email, nickname } = this.state;
 
         this.props.create_contact({email, nickname});
-    }
+    };
 
     render(){
-        const { email, nickname, buttonLoad } = this.state
-        const { contact_list } = this.props
+        const { email, nickname, buttonLoad } = this.state;
+        const { contact_list } = this.props;
         const formOne = [
             {
                 label: "Email",
@@ -86,7 +86,7 @@ export default class AddContact extends Component<Props, State> {
                                 size="sm" value="Create contact" 
                             />
                             <Buttons buttonLoad={buttonLoad} value="Update contact"
-                                type="button" color="secondary" size="sm"
+                                type="submit" color="secondary" size="sm"
                             />
                         </ButtonContainerTwo>
                     </ButtonContainer>

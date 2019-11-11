@@ -22,4 +22,4 @@ const HeaderFunctions = styled.div`
     align-items: center;
     justify-content: center;
     width: 530px ;
-`
+`;

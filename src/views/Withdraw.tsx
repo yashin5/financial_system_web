@@ -12,7 +12,7 @@ interface State {
 
 interface Props{
     new_balance: Function,
-}
+};
 
 export default class Withdraw extends Component<Props, State> {
     constructor(props: Props){
@@ -30,7 +30,7 @@ export default class Withdraw extends Component<Props, State> {
     withdraw = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         this.props.new_balance("1000")
-    }
+    };
 
     render(){
         const { value, buttonLoad } = this.state
@@ -65,4 +65,4 @@ const ButtonContainer = styled.div`
     display: flex;
     justify-content: center;
     width: 530px ;
-`
+`;
