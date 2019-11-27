@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
 import Buttons from '../components/Buttons'
+import formatValueToAPIAccept from '../helpers/currencyHelper'
 
 interface State {
     value: string,
@@ -29,6 +30,9 @@ export default class Withdraw extends Component<Props, State> {
 
     withdraw = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const { value } = this.state
+        const formatedValue = formatValueToAPIAccept( value )
+
         this.props.new_balance("1000")
     };
 
@@ -39,7 +43,9 @@ export default class Withdraw extends Component<Props, State> {
                 label: "Value",
                 value: value,
                 onChange: this.value,
-                type: "text"
+                type: "text",
+                maskMoney: true,
+                precision: 2
             }
         ];
 
