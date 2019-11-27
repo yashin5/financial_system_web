@@ -111,6 +111,8 @@ export default class Split extends Component<Props, State> {
             value: value,
             onChange: this.value,
             type: "text",
+            maskMoney: true,
+            precision: 2
         }];
         
         return(

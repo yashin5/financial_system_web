@@ -1,34 +1,36 @@
 import React from 'react'
 import { Col, Row, FormGroup, Input, Label } from 'reactstrap'
+import CurrencyInput from 'react-currency-input';
 
 import styled from 'styled-components'
 
 
 const inputFieldFormat = (formProps: any) =>{
-    if(formProps.type === "text"){
-        return <Input onChange={formProps.onChange} value={formProps.value} type={formProps.type}/>
-    }
-    else if(formProps.type === "email"){
-        return <Input onChange={formProps.onChange} value={formProps.value} type={formProps.type}/>
-    }
-    else if(formProps.type === "date"){
-        return <Input onChange={formProps.onChange} value={formProps.value} type={formProps.type}/>
+    if(formProps.maskMoney){
+        return <CurrencyInput value={formProps.value} onChangeEvent={formProps.onChange} 
+        precision={formProps.precision} decimalSeparator="," thousandSeparator="." 
+        />
     }
     else if(formProps.type === "select"){
         return (
             <Input onChange={formProps.onChange} value={formProps.value} type={formProps.type}>
-                {formProps.options.map((option: string) =>(<option>{option}</option>))}
-            </Input>   
+                {
+                    formProps.options?
+                    formProps.options.map((option: string) =>(<option>{option}</option>))
+                    : false
+                }
+            </Input>
         )
     }
-    else if(formProps.type === "textarea"){
-        return <Input  onChange={formProps.onChange} value={formProps.value}  type={formProps.type} />
+    else{
+        return <Input onChange={formProps.onChange} value={formProps.value} type={formProps.type}/>
     };
 };
 
+
 interface Form {
     type: string,
-    onChange: Function,
+    onChange: (e: any) => void,
     value: any,
     label: string
     options?: Array<string>
@@ -42,7 +44,7 @@ const Forms = (props: Props) =>{
     const forms = (
         <RowContainer >
            { 
-                props.forms.map((form: any) => (        
+                props.forms.map((form: Form) => (        
                     <Col key={form.label} md="4" >
                         <FormGroup >
                             <Label>{form.label}</Label>

@@ -51,7 +51,9 @@ export default class Deposit extends Component<Props, State> {
             label: "Value",
             value: value,
             onChange: this.value,
-            type: "text"
+            type: "text",
+            maskMoney: true,
+            precision: 2
         }];
 
         return(
