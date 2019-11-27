@@ -78,7 +78,7 @@ export default class AddContact extends Component<Props, State> {
                 <div style={flex}>
                 <Form onSubmit={this.contacts}>
                     <Col md="12">
-                        {Forms({forms: formOne})}
+                        <Forms forms={formOne} />
                     </Col>
                     <ButtonContainer>
                         <ButtonContainerTwo>

@@ -6,6 +6,7 @@ import HeaderFunction from '../components/HeaderFunction'
 import SplitTable from '../components/SplitTable'
 import Buttons from '../components/Buttons'
 import formatValueToAPIAccept from '../helpers/currencyHelper'
+import { validateFormHelper, formatValueToValidate } from '../helpers/validateFormHelper'
 
 
 interface SplitItem {
@@ -18,7 +19,8 @@ interface State {
     value: string,
     percent: string,
     split_list: Array<SplitItem>,
-    buttonLoad: boolean
+    buttonLoad1: boolean,
+    buttonLoad2: boolean
 };
 
 interface Props{
@@ -33,24 +35,43 @@ export default class Split extends Component<Props, State> {
             value: "",
             percent: "",
             split_list: [],
-            buttonLoad: false
+            buttonLoad1: true,
+            buttonLoad2: true
         };
     };
 
+    buttonload1 = (buttonState: boolean) => (this.setState({ buttonLoad1: buttonState }));
+    buttonload2 = (buttonState: boolean) => (this.setState({ buttonLoad2: buttonState }));
+
     email = (event: ChangeEvent<HTMLInputElement>) =>{
-        this.doEmail(event.target.value)
+        const { value } = this.state;
+        const email = event.target.value;
+        const valueToValidate = formatValueToValidate(value);
+        const validateInputs = { valueToValidate, email };
+
+        this.doEmail( email );
+
+        validateFormHelper(this.buttonload1, validateInputs);       
     };
 
     doEmail = (email: string) => {
-        this.setState({ email })
+        this.setState({ email });
     };
 
     value = (event: ChangeEvent<HTMLInputElement>) =>{
-        this.setState({value: event.target.value})
+        const value = event.target.value;
+
+        this.setState({value: value});                
     };
 
-    percent = (event: ChangeEvent<HTMLInputElement>) => {
-        this.doPercent(event.target.value)
+    percent = (event: ChangeEvent<HTMLInputElement>) => {        
+        const { email } = this.state
+        const percent = event.target.value;
+        const validateInputs = { email, percent };
+        
+        this.doPercent( percent );
+
+        validateFormHelper(this.buttonload1, validateInputs);        
     };
 
     doPercent = (percent: string) => {
@@ -67,7 +88,7 @@ export default class Split extends Component<Props, State> {
         const headers = new Headers({"content-type": "application/json", "authorization": `${token}`})
         const body = JSON.stringify(transferItem);
 
-        this.setState({buttonLoad: true}, () => {
+        this.setState({buttonLoad2: true}, () => {
             fetch("url", {
                 method,
                 headers,
@@ -93,7 +114,7 @@ export default class Split extends Component<Props, State> {
     };
 
     render(){
-        const { email, value, percent, split_list, buttonLoad} = this.state
+        const { email, value, percent, split_list, buttonLoad1, buttonLoad2} = this.state
         const formOne = [{
             label: "Email",
             value: email,
@@ -123,19 +144,19 @@ export default class Split extends Component<Props, State> {
                         <HeaderFunction header="Split transfer" />
                         <FormGroupContainer>
                             <Col md="12">
-                                {Forms({forms: formTwo})}
+                                <Forms forms={formTwo} />
                             </Col>
                         </FormGroupContainer>
                         <Col md="12">
-                            {Forms({forms: formOne})}
+                            <Forms forms={formOne} />
                         </Col>
                         <ButtonContainer>
                             <ButtonContainerTwo>
                                 <Buttons type="submit" color="success" 
-                                    size="sm" buttonLoad={buttonLoad} value="Do!"
+                                    size="sm" buttonLoad={buttonLoad2} value="Do!"
                                 />
                                 <Buttons type="button" color="secondary" 
-                                    size="sm" buttonLoad={buttonLoad} value="Add to split"
+                                    size="sm" buttonLoad={buttonLoad1} value="Add to split"
                                     onClick={this.addItemToSplitTable}
                                 />
                             </ButtonContainerTwo>

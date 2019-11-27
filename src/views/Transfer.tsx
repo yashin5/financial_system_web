@@ -5,6 +5,8 @@ import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
 import Buttons from '../components/Buttons'
 import formatValueToAPIAccept from '../helpers/currencyHelper'
+import { validateFormHelper, formatValueToValidate } from '../helpers/validateFormHelper'
+
 
 
 interface State {
@@ -23,17 +25,33 @@ export default class Deposit extends Component<Props, State> {
         this.state = {
             email: "",
             value: "",
-            buttonLoad: false
+            buttonLoad: true
         };
     };
 
     email = (event: ChangeEvent<HTMLInputElement>) =>{
-        this.setState({email: event.target.value})
+        const { value } = this.state
+        const email = event.target.value
+        const valueToValidate = formatValueToValidate(value)
+        const validateInputs = { valueToValidate, email }
+
+        this.setState({ email });
+
+        validateFormHelper(this.buttonload, validateInputs)    
     };
 
     value = (event: ChangeEvent<HTMLInputElement>) =>{
-        this.setState({value: event.target.value})
+        const { email } = this.state
+        const value = event.target.value
+        const valueToValidate = formatValueToValidate(value)
+        const validateInputs = { valueToValidate, email }
+        this.setState({value: value})
+
+        
+        validateFormHelper(this.buttonload, validateInputs)      
     };
+
+    buttonload = (buttonState: boolean) => (this.setState({ buttonLoad: buttonState }));
 
     transfer = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -41,7 +59,7 @@ export default class Deposit extends Component<Props, State> {
         const formatedValue = formatValueToAPIAccept( value )
 
         this.props.new_balance("1000")
-    }
+    };
 
     render(){
         const { email, value, buttonLoad} = this.state
@@ -49,7 +67,7 @@ export default class Deposit extends Component<Props, State> {
             label: "Email",
             value: email,
             onChange: this.email,
-            type: "text"
+            type: "email"
         },
         {
             label: "Value",
@@ -65,7 +83,7 @@ export default class Deposit extends Component<Props, State> {
                 <HeaderFunction header="Transfer" />
                 <Form onSubmit={this.transfer}>
                     <Col md="6">
-                        {Forms({forms: formOne})}
+                        <Forms forms={formOne} />
                     </Col>
                     <ButtonContainer>
                         <Buttons buttonLoad={buttonLoad} value="Do!" 

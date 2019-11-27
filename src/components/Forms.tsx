@@ -6,23 +6,25 @@ import styled from 'styled-components'
 
 const inputFieldFormat = (formProps: any) =>{
     if(formProps.maskMoney){
-        return <Teste value={formProps.value} onChangeEvent={formProps.onChange} 
+        return <MaskedInput name={formProps.label} value={formProps.value} onChangeEvent={formProps.onChange} 
         precision={formProps.precision} decimalSeparator="," thousandSeparator="." 
         />
     }
     else if(formProps.type === "select"){
         return (
-            <Input onChange={formProps.onChange} value={formProps.value} type={formProps.type}>
+            <Input name={formProps.label} onChange={formProps.onChange} value={formProps.value} type={formProps.type}>
                 {
                     formProps.options?
-                    formProps.options.map((option: string) =>(<option>{option}</option>))
+                    formProps.options.map((option: string) =>(
+                        <option key={option}>{option}</option>
+                    ))
                     : false
                 }
             </Input>
         );
     }
     else{
-        return <Input onChange={formProps.onChange} value={formProps.value} type={formProps.type}/>
+        return <Input name={formProps.label} onChange={formProps.onChange} value={formProps.value} type={formProps.type}/>
     };
 };
 
@@ -46,7 +48,7 @@ const Forms = (props: Props) =>{
                 props.forms.map((form: Form) => (        
                     <Col key={form.label} md="4" >
                         <FormGroup >
-                            <Label>{form.label}</Label>
+                            <Label for={form.label}>{form.label}</Label>
                             {inputFieldFormat(form)}            
                         </FormGroup>
                     </Col>       
@@ -65,7 +67,7 @@ const RowContainer = styled(Row)`
     justify-content: space-around;
 `;
 
-const Teste = styled(CurrencyInput)`
+const MaskedInput = styled(CurrencyInput)`
 display: block;
 width: 100%;
 height: calc(1.5em + .75rem + 2px);

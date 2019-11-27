@@ -42,7 +42,7 @@ export default class Dashboard extends Component<Props,State>{
         this.setState({
             email: "ysantos@stone.com.br",
             balance: "10.000221",
-            currencies: ["BRL"],
+            currencies: ["BRL", "USD"],
             contact_list: [{
                 nickname: "Yashin Sants",
                 email: "ysantos@gmail.com",
