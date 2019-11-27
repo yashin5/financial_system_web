@@ -5,6 +5,7 @@ import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
 import SplitTable from '../components/SplitTable'
 import Buttons from '../components/Buttons'
+import formatValueToAPIAccept from '../helpers/currencyHelper'
 
 
 interface SplitItem {
@@ -59,7 +60,8 @@ export default class Split extends Component<Props, State> {
     split = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const { split_list, value } = this.state;
-        const transferItem = {value, split_list};
+        const formatedValue = formatValueToAPIAccept( value )
+        const transferItem = {value: formatedValue, split_list};
         const token = localStorage.getItem("token")
         const method = "POST";
         const headers = new Headers({"content-type": "application/json", "authorization": `${token}`})
@@ -75,7 +77,6 @@ export default class Split extends Component<Props, State> {
     };
 
     addItemToSplitTable = () => {
-        console.log("oi")
         const { split_list, email, percent } = this.state;
         const new_item = { email, percent};
 

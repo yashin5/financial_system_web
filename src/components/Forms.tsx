@@ -1,13 +1,12 @@
 import React from 'react'
 import { Col, Row, FormGroup, Input, Label } from 'reactstrap'
 import CurrencyInput from 'react-currency-input';
-
 import styled from 'styled-components'
 
 
 const inputFieldFormat = (formProps: any) =>{
     if(formProps.maskMoney){
-        return <CurrencyInput value={formProps.value} onChangeEvent={formProps.onChange} 
+        return <Teste value={formProps.value} onChangeEvent={formProps.onChange} 
         precision={formProps.precision} decimalSeparator="," thousandSeparator="." 
         />
     }
@@ -20,7 +19,7 @@ const inputFieldFormat = (formProps: any) =>{
                     : false
                 }
             </Input>
-        )
+        );
     }
     else{
         return <Input onChange={formProps.onChange} value={formProps.value} type={formProps.type}/>
@@ -65,3 +64,25 @@ const RowContainer = styled(Row)`
     display: flex;
     justify-content: space-around;
 `;
+
+const Teste = styled(CurrencyInput)`
+display: block;
+width: 100%;
+height: calc(1.5em + .75rem + 2px);
+padding: .375rem .75rem;
+font-size: 1rem;
+font-weight: 400;
+line-height: 1.5;
+color: #495057;
+background-color: #fff;
+background-clip: padding-box;
+border: 1px solid #ced4da;
+border-radius: .25rem;
+transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
+  &:focus {
+    outline: none !important;
+    box-shadow: 0px 0px 0px 4px #CECEFD;    
+    border: 1px solid #9DC6F1;
+  },  
+`
