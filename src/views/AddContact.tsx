@@ -41,7 +41,7 @@ export default class AddContact extends Component<Props, State> {
     buttonload1 = (buttonState: boolean) => (this.setState({ buttonLoad1: buttonState }));
     buttonload2 = (buttonState: boolean) => (this.setState({ buttonLoad2: buttonState }));
 
-    verifyIfContactAlreadyExist = (email) => {
+    verifyIfContactAlreadyExist = (email: string) => {
         const { contact_list } = this.props;
         const verifyng_list = contact_list.filter((contact: Contact) => contact.email === email);
 
@@ -55,7 +55,7 @@ export default class AddContact extends Component<Props, State> {
         };
     };
 
-    activeOrDeactiveButton = (validateInputs, email) => {
+    activeOrDeactiveButton = (validateInputs : Object, email: string) => {
         if(this.verifyIfContactAlreadyExist(email)){
             validateFormHelper(this.buttonload1, {...validateInputs, email: ""});
             validateFormHelper(this.buttonload2, {...validateInputs, email });     
