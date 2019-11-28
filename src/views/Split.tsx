@@ -125,7 +125,11 @@ export default class Split extends Component<Props, State> {
             label: "Percent",
             value: percent,
             onChange: this.percent,
-            type: "text"
+            type: "number",
+            step: "0.01",
+            min: "0.01",
+            max: "100.00",
+            pattern: `[0-9]+([\.,][0-9]+)?`
         }];
 
         const formTwo = [{

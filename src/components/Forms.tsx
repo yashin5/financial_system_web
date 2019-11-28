@@ -24,7 +24,10 @@ const inputFieldFormat = (formProps: any) =>{
         );
     }
     else{
-        return <Input name={formProps.label} onChange={formProps.onChange} value={formProps.value} type={formProps.type}/>
+        return <Input max={formProps.max} min={formProps.min} pattern={formProps.pattern} 
+            step={formProps.step} name={formProps.label} onChange={formProps.onChange} 
+            value={formProps.value} type={formProps.type}
+        />
     };
 };
 
@@ -34,7 +37,9 @@ interface Form {
     onChange: (e: any) => void,
     value: any,
     label: string
-    options?: Array<string>
+    options?: Array<string>,
+    step?: string,
+    pattern?: string,
 };
 
 interface Props {
