@@ -60,10 +60,9 @@ export default class Split extends Component<Props, State> {
     };
 
     email = (event: ChangeEvent<HTMLInputElement>) =>{
-        const { value } = this.state;
+        const { split_list, percent } = this.state;
         const email = event.target.value;
-        const valueToValidate = formatValueToValidate(value);
-        const validateInputs = { valueToValidate, email };
+        const validateInputs = { email, percent: this.validateTotalPercent(split_list, percent) };
 
         this.setEmail( email );
 
@@ -135,12 +134,15 @@ export default class Split extends Component<Props, State> {
     rmItemToSplitTable = (rmSplitItem: SplitItem) => {
         const { split_list } = this.state;
         const new_split_list = split_list.filter((splitItem: SplitItem) => splitItem !== rmSplitItem);
+        const actualPercent = this.totalPercent(new_split_list)
+        const verifyActualPercent = actualPercent !== 100? true : false
         this.setState({split_list: new_split_list});
 
         this.setPercent(rmSplitItem.percent);
         this.setEmail(rmSplitItem.email);
         this.buttonload1(false)
         this.totalPercent(new_split_list);
+        this.buttonload2(verifyActualPercent)
     };
 
     doSplit = () => {
