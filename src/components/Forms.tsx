@@ -53,7 +53,7 @@ const Forms = (props: Props) =>{
                 props.forms.map((form: Form) => (        
                     <Col key={form.label} md="4" >
                         <FormGroup >
-                            <Label for={form.label}>{form.label}</Label>
+                            <LabelStyled for={form.label}>{form.label}</LabelStyled>
                             {inputFieldFormat(form)}            
                         </FormGroup>
                     </Col>       
@@ -66,6 +66,10 @@ const Forms = (props: Props) =>{
 };
 
 export default Forms
+
+const LabelStyled = styled(Label)`
+    font-size: 0.8rem
+`;
 
 const RowContainer = styled(Row)`    
     display: flex;

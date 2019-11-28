@@ -42,8 +42,8 @@ export default class Split extends Component<Props, State> {
         };
     };
 
-    buttonload1 = (buttonState: boolean) => (this.setState({ buttonLoad1: buttonState }));
-    buttonload2 = (buttonState: boolean) => (this.setState({ buttonLoad2: buttonState }));
+    buttonload1 = (buttonLoad1: boolean) => (this.setState({ buttonLoad1 }));
+    buttonload2 = (buttonLoad2: boolean) => (this.setState({ buttonLoad2 }));
 
     totalPercent = (split_list: Array<SplitItem>) =>{
         const totalPercent = split_list.reduce((accumulator: number, item: SplitItem) => accumulator + parseFloat(item.percent), 0.00);
@@ -236,7 +236,7 @@ const FormGroupContainer = styled.div`
     align-items: left;
 `;
 
-const SplitContainer = styled(Container)`
+const SplitContainer = styled.div`
     display: flex;
     justify-content: space-between;
 `;

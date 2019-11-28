@@ -25,7 +25,7 @@ export default class Withdraw extends Component<Props, State> {
         };
     };
 
-    buttonload = (buttonState: boolean) => (this.setState({ buttonLoad: buttonState }));
+    buttonload = (buttonLoad: boolean) => (this.setState({ buttonLoad }));
 
     value = (event: ChangeEvent<HTMLInputElement>) =>{        
         const value = event.target.value

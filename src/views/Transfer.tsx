@@ -29,6 +29,8 @@ export default class Deposit extends Component<Props, State> {
         };
     };
 
+    buttonload = (buttonLoad: boolean) => (this.setState({ buttonLoad }));
+
     email = (event: ChangeEvent<HTMLInputElement>) =>{
         const { value } = this.state
         const email = event.target.value
@@ -50,8 +52,6 @@ export default class Deposit extends Component<Props, State> {
         
         validateFormHelper(this.buttonload, validateInputs)      
     };
-
-    buttonload = (buttonState: boolean) => (this.setState({ buttonLoad: buttonState }));
 
     transfer = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
