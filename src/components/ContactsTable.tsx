@@ -1,6 +1,6 @@
 import React from 'react'
 import { Table } from 'reactstrap';
-
+import sortObjectListHelper from '../helpers/sortObjectListHelper'
 
 interface Contact {
     email: string,
@@ -27,7 +27,8 @@ const ContactsTable = (props: Props) => {
             </thead>
             <tbody>
                 {
-                    props.contact_list.map((contact: Contact) =>(
+                    props.contact_list.sort((contactA, contactB) => sortObjectListHelper( contactA, contactB, "nickname" ))
+                    .map((contact: Contact) =>(
                         <tr key={contact.email} onDoubleClick={() => autoFillEmail(contact.email)}>
                             <td>{contact.email}</td>
                             <td>{contact.nickname}</td>
@@ -36,6 +37,7 @@ const ContactsTable = (props: Props) => {
                 }
             </tbody>
         </Table>
+        
     );
 };
 

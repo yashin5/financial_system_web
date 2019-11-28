@@ -5,6 +5,7 @@ import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
 import Buttons from '../components/Buttons'
 import formatValueToAPIAccept from '../helpers/currencyHelper'
+import { validateFormHelper, formatValueToValidate } from '../helpers/validateFormHelper'
 
 interface State {
     value: string,
@@ -20,13 +21,21 @@ export default class Withdraw extends Component<Props, State> {
         super(props);
         this.state = { 
             value: "",
-            buttonLoad: false
+            buttonLoad: true
         };
     };
 
-    value = (event: ChangeEvent<HTMLInputElement>) =>{
-        this.setState({value: event.target.value})
+    buttonload = (buttonState: boolean) => (this.setState({ buttonLoad: buttonState }));
+
+    value = (event: ChangeEvent<HTMLInputElement>) =>{        
+        const value = event.target.value
+        const valueToValidate = formatValueToValidate(value)
+        const validateInputs = { valueToValidate } 
+        this.setState({value: value});
+        
+        validateFormHelper(this.buttonload, validateInputs);
     };
+
 
     withdraw = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -54,7 +63,7 @@ export default class Withdraw extends Component<Props, State> {
                 <HeaderFunction header="Withdraw" />
                 <Form onSubmit={this.withdraw}>
                     <Col md="6">
-                        {Forms({forms: formOne})}
+                        <Forms forms={formOne} />
                     </Col>
                     <ButtonContainer>
                         <Buttons buttonLoad={buttonLoad} value="Do!" 

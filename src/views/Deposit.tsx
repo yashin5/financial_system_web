@@ -5,6 +5,7 @@ import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
 import Buttons from '../components/Buttons'
 import formatValueToAPIAccept from '../helpers/currencyHelper'
+import { validateFormHelper, formatValueToValidate } from '../helpers/validateFormHelper'
 
 
 interface State {
@@ -28,26 +29,49 @@ export default class Deposit extends Component<Props, State> {
             value: "",
             currency: "",
             currencies: this.props.currencies,
-            buttonLoad: false
+            buttonLoad: true
         };
     };
 
+    buttonload = (buttonState: boolean) => (this.setState({ buttonLoad: buttonState }));
+
     email = (event: ChangeEvent<HTMLInputElement>) =>{
-        this.setState({email: event.target.value})
+        const { value, currency } = this.state;
+        const email = event.target.value;
+        const valueToValidate = formatValueToValidate(value);
+        const validateInputs = { valueToValidate, email, currency };
+
+        this.setState({ email });
+
+        validateFormHelper(this.buttonload, validateInputs);     
     };
 
     value = (event: ChangeEvent<HTMLInputElement>) =>{
-        this.setState({value: event.target.value})
+        const { email, currency } = this.state;
+        const value = event.target.value;
+        const valueToValidate = formatValueToValidate(value);
+        const validateInputs = { valueToValidate, email, currency };
+
+        this.setState({value: event.target.value});
+        
+        validateFormHelper(this.buttonload, validateInputs);
     };
 
     currency = (event: ChangeEvent<HTMLInputElement>) => {
-        this.setState({currency: event.target.value})
+        const { email, value } = this.state;
+        const currency = event.target.value;
+        const valueToValidate = formatValueToValidate(value)
+        const validateInputs = { valueToValidate, email, currency };
+
+        this.setState({ currency });
+        
+        validateFormHelper(this.buttonload, validateInputs)      
     };
 
     deposit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const { value, email, currency } = this.state
-        const formatedValue = formatValueToAPIAccept( value )
+        
+        const { value, email, currency } = this.state;
+        const formatedValue = formatValueToAPIAccept( value );
 
         this.props.new_balance("1000")
     };
@@ -58,7 +82,7 @@ export default class Deposit extends Component<Props, State> {
             label: "Email",
             value: email,
             onChange: this.email,
-            type: "text"
+            type: "email"
         },
         {
             label: "Value",
@@ -82,11 +106,11 @@ export default class Deposit extends Component<Props, State> {
                 <HeaderFunction header="Deposit" />
                 <Form onSubmit={this.deposit}>
                     <Col md="6">
-                        {Forms({forms: formOne})}
+                        <Forms forms={formOne} />
                     </Col>
                     <FormContainer>
                         <Col md="6">
-                            {Forms({forms: formTwo})}
+                            <Forms forms={formTwo} />
                         </Col>
                     </FormContainer>
                     <ButtonContainer>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Table } from 'reactstrap';
-
+import sortObjectListHelper from '../helpers/sortObjectListHelper'
 
 interface SplitItem {
     email: string,
@@ -10,6 +10,7 @@ interface SplitItem {
 interface Props{
     split_list: Array<SplitItem>,
     rmTableItem: Function,
+    totalPercent: number,
 };
 
 const SplitTable = (props: Props) => {
@@ -27,7 +28,8 @@ const SplitTable = (props: Props) => {
             </thead>
             <tbody>
                 {
-                    props.split_list.map((splitItem: SplitItem) =>(
+                    props.split_list.sort((a, b) => sortObjectListHelper(a, b, "percent"))
+                    .map((splitItem: SplitItem) =>(
                         <tr key={splitItem.email} onDoubleClick={() => editItem(splitItem)}>
                             <td>{splitItem.email}</td>
                             <td>{splitItem.percent}</td>
@@ -35,6 +37,12 @@ const SplitTable = (props: Props) => {
                     ))
                 }
             </tbody>
+            <tfoot>
+                    <tr>
+                        <td> total</td>
+                        <td>{props.totalPercent}</td>
+                    </tr>
+                </tfoot>
         </Table>
     );
 };

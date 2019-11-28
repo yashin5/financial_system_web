@@ -42,7 +42,7 @@ export default class Dashboard extends Component<Props,State>{
         this.setState({
             email: "ysantos@stone.com.br",
             balance: "10.000221",
-            currencies: ["BRL"],
+            currencies: ["BRL", "USD"],
             contact_list: [{
                 nickname: "Yashin Sants",
                 email: "ysantos@gmail.com",
@@ -59,8 +59,9 @@ export default class Dashboard extends Component<Props,State>{
         const verify_if_contact_already_exist = contact_list.filter(contact => (
             contact.email !== new_contact.email
         ));
-        const new_contact_list = [...verify_if_contact_already_exist, new_contact];
-        
+
+        const new_contact_list = [...verify_if_contact_already_exist, new_contact]
+            
         this.setState({contact_list: new_contact_list});
     };
 

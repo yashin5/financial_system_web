@@ -5,6 +5,8 @@ import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
 import ContactsTable from '../components/ContactsTable';
 import Buttons from '../components/Buttons'
+import { validateFormHelper } from '../helpers/validateFormHelper'
+
 
 
 
@@ -16,7 +18,8 @@ interface Contact {
 interface State {
     email: string,
     nickname: string,
-    buttonLoad: boolean,
+    buttonLoad1: boolean,
+    buttonLoad2: boolean,
 };
 
 interface Props{
@@ -30,20 +33,63 @@ export default class AddContact extends Component<Props, State> {
         this.state = { 
             email: "",
             nickname: "",
-            buttonLoad: false
+            buttonLoad1: true,
+            buttonLoad2: true
+        };
+    };
+
+    buttonload1 = (buttonState: boolean) => (this.setState({ buttonLoad1: buttonState }));
+    buttonload2 = (buttonState: boolean) => (this.setState({ buttonLoad2: buttonState }));
+
+    verifyIfContactAlreadyExist = (email: string) => {
+        const { contact_list } = this.props;
+        const verifyng_list = contact_list.filter((contact: Contact) => contact.email === email);
+
+        if (verifyng_list.length !== 0){
+            this.buttonload1(true)
+            return true
+        }
+        else{
+            this.buttonload1(false)
+            return false
+        };
+    };
+
+    activeOrDeactiveButton = (validateInputs : Object, email: string) => {
+        if(this.verifyIfContactAlreadyExist(email)){
+            validateFormHelper(this.buttonload1, {...validateInputs, email: ""});
+            validateFormHelper(this.buttonload2, {...validateInputs, email });     
+        }
+        else{
+            validateFormHelper(this.buttonload1, {...validateInputs, email});  
+            validateFormHelper(this.buttonload2, {...validateInputs, email: "" });        
         };
     };
 
     email = (event: ChangeEvent<HTMLInputElement>) =>{
-        this.doEmail(event.target.value);
+        const { nickname } = this.state;
+        const email = event.target.value;
+        const validateInputs = { nickname };
+
+        this.setEmail( email );
+        this.activeOrDeactiveButton(validateInputs, email);
     };
 
-    doEmail = (email: string) => {
+    setEmail = (email: string) => {
+        const { nickname } = this.state;
+        const validateInputs = { nickname };
+
         this.setState({ email });
+        this.activeOrDeactiveButton(validateInputs, email);
     };
 
     nickname = (event: ChangeEvent<HTMLInputElement>) =>{
-        this.setState({nickname: event.target.value});
+        const { email } = this.state;
+        const nickname = event.target.value;
+        const validateInputs = { nickname };
+
+        this.setState( {nickname} );
+        this.activeOrDeactiveButton(validateInputs, email);
     };
 
     contacts = (event: FormEvent<HTMLFormElement>) => {
@@ -54,7 +100,7 @@ export default class AddContact extends Component<Props, State> {
     };
 
     render(){
-        const { email, nickname, buttonLoad } = this.state;
+        const { email, nickname, buttonLoad1, buttonLoad2 } = this.state;
         const { contact_list } = this.props;
         const formOne = [
             {
@@ -78,21 +124,21 @@ export default class AddContact extends Component<Props, State> {
                 <div style={flex}>
                 <Form onSubmit={this.contacts}>
                     <Col md="12">
-                        {Forms({forms: formOne})}
+                        <Forms forms={formOne} />
                     </Col>
                     <ButtonContainer>
                         <ButtonContainerTwo>
-                            <Buttons buttonLoad={buttonLoad} type="submit" color="success"
+                            <Buttons buttonLoad={buttonLoad1} type="submit" color="success"
                                 size="sm" value="Create contact" 
                             />
-                            <Buttons buttonLoad={buttonLoad} value="Update contact"
+                            <Buttons buttonLoad={buttonLoad2} value="Update contact"
                                 type="submit" color="secondary" size="sm"
                             />
                         </ButtonContainerTwo>
                     </ButtonContainer>
                 </Form>
                 <Col md="12">
-                    <ContactsTable auto_fill_email={this.doEmail} contact_list={contact_list} />  
+                    <ContactsTable auto_fill_email={this.setEmail} contact_list={contact_list} />  
                 </Col>
                 </div>
                 </Col>
