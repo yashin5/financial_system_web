@@ -118,31 +118,31 @@ export default class AddContact extends Component<Props, State> {
         ];
 
         return(
-            <Container>
+            <div>
                 <Col md="6">
                 <HeaderFunction header="Contacts" />
                 <div style={flex}>
-                <Form onSubmit={this.contacts}>
+                    <Form onSubmit={this.contacts}>
+                        <Col md="12">
+                            <Forms forms={formOne} />
+                        </Col>
+                        <ButtonContainer>
+                            <ButtonContainerTwo>
+                                <Buttons buttonLoad={buttonLoad1} type="submit" color="success"
+                                    size="sm" value="Create contact" 
+                                />
+                                <Buttons buttonLoad={buttonLoad2} value="Update contact"
+                                    type="submit" color="secondary" size="sm"
+                                />
+                            </ButtonContainerTwo>
+                        </ButtonContainer>
+                    </Form>
                     <Col md="12">
-                        <Forms forms={formOne} />
+                        <ContactsTable auto_fill_email={this.setEmail} contact_list={contact_list} />  
                     </Col>
-                    <ButtonContainer>
-                        <ButtonContainerTwo>
-                            <Buttons buttonLoad={buttonLoad1} type="submit" color="success"
-                                size="sm" value="Create contact" 
-                            />
-                            <Buttons buttonLoad={buttonLoad2} value="Update contact"
-                                type="submit" color="secondary" size="sm"
-                            />
-                        </ButtonContainerTwo>
-                    </ButtonContainer>
-                </Form>
-                <Col md="12">
-                    <ContactsTable auto_fill_email={this.setEmail} contact_list={contact_list} />  
-                </Col>
                 </div>
                 </Col>
-            </Container>
+            </div>
         );
     };
 };

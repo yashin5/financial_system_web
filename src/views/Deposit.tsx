@@ -33,7 +33,7 @@ export default class Deposit extends Component<Props, State> {
         };
     };
 
-    buttonload = (buttonState: boolean) => (this.setState({ buttonLoad: buttonState }));
+    buttonload = (buttonLoad: boolean) => (this.setState({ buttonLoad }));
 
     email = (event: ChangeEvent<HTMLInputElement>) =>{
         const { value, currency } = this.state;
@@ -102,7 +102,7 @@ export default class Deposit extends Component<Props, State> {
         }];
 
         return(
-            <Container>
+            <div>
                 <HeaderFunction header="Deposit" />
                 <Form onSubmit={this.deposit}>
                     <Col md="6">
@@ -117,7 +117,7 @@ export default class Deposit extends Component<Props, State> {
                         <Buttons buttonLoad={buttonLoad} type="submit" color="success" size="sm" value="Do!"/>
                     </ButtonContainer>
                 </Form>
-            </Container>
+            </div>
         );
     };
 };

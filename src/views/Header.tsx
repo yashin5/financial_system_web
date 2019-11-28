@@ -30,7 +30,7 @@ const Logout = styled.a`
     }
 `;
 
-const HeaderContainer = styled(Container)`
+const HeaderContainer = styled.div`
     margin-top: 25px;
     display: flex;
     flex-wrap: wrap;

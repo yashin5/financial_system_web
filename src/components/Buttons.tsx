@@ -8,6 +8,7 @@ interface Props{
     color: string,
     size?: string,
     onClick?: Function,
+    style?: Object,
 
 };
 
@@ -17,11 +18,11 @@ const Buttons = (props: Props) => {
 
     return(
         !props.buttonLoad?
-            <Button type={buttonType} onClick={doFunction} 
+            <Button style={props.style} type={buttonType} onClick={doFunction} 
                 color={props.color} size={props.size}>{props.value}
             </Button>
             :
-            <Button type={buttonType} color={props.color} 
+            <Button style={props.style} type={buttonType} color={props.color} 
                 size={props.size} disabled>
                     {props.value}
             </Button>

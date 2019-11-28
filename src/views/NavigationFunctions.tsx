@@ -5,9 +5,9 @@ import nav from '../nav'
 
 const NavigationFunctions = () => {
     return(
-        <Container>
+        <div>
             <Navigation navigation={nav} />
-        </Container>
+        </div>
     );
 };
 
