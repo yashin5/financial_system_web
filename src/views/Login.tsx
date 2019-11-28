@@ -101,5 +101,6 @@ const NavLinkStyled = styled(NavLink)`
 `
 const HeaderStyled = styled.h1`
     text-align: center;
-    font-size: 1.5rem
+    font-size: 1.5rem;
+    margin-top: 25px
 `
