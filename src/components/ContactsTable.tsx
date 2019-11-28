@@ -37,6 +37,7 @@ const ContactsTable = (props: Props) => {
                 }
             </tbody>
         </Table>
+        
     );
 };
 

@@ -10,6 +10,7 @@ interface SplitItem {
 interface Props{
     split_list: Array<SplitItem>,
     rmTableItem: Function,
+    totalPercent: number,
 };
 
 const SplitTable = (props: Props) => {
@@ -36,6 +37,12 @@ const SplitTable = (props: Props) => {
                     ))
                 }
             </tbody>
+            <tfoot>
+                    <tr>
+                        <td> total</td>
+                        <td>{props.totalPercent}</td>
+                    </tr>
+                </tfoot>
         </Table>
     );
 };

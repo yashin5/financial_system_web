@@ -1,7 +1,7 @@
 
 export const validateFormHelper = (callbackButton: Function, fields: Object) => {
     const fieldNames = Object.keys(fields);
-    const fieldsWithoutError = fieldNames.filter(fieldName => fields[fieldName] !== "" && fields[fieldName] !== "0" && fields[fieldName] != "NaN" );    
+    const fieldsWithoutError = fieldNames.filter(fieldName => fields[fieldName] !== "" && fields[fieldName] !== "0" && fields[fieldName] !== "NaN" );    
     if(fieldsWithoutError.length === fieldNames.length){    
         return callbackButton(false);
     };    
