@@ -1,6 +1,6 @@
 import React from 'react'
 import { Table } from 'reactstrap';
-
+import sortObjectListHelper from '../helpers/sortObjectListHelper'
 
 interface SplitItem {
     email: string,
@@ -27,7 +27,8 @@ const SplitTable = (props: Props) => {
             </thead>
             <tbody>
                 {
-                    props.split_list.map((splitItem: SplitItem) =>(
+                    props.split_list.sort((a, b) => sortObjectListHelper(a, b, "percent"))
+                    .map((splitItem: SplitItem) =>(
                         <tr key={splitItem.email} onDoubleClick={() => editItem(splitItem)}>
                             <td>{splitItem.email}</td>
                             <td>{splitItem.percent}</td>
