@@ -1,10 +1,12 @@
-import React, { Component, ChangeEvent } from 'react'
-import { NavLink } from 'react-router-dom';
+import React, { Component, ChangeEvent, FormEvent } from 'react'
+import { NavLink, BrowserRouter } from 'react-router-dom';
 import { Col, Form } from 'reactstrap'
 import styled from 'styled-components'
+import createBrowserHistory from "../history";
 import Buttons from '../components/Buttons'
 import Forms from '../components/Forms'
-import { validateFormHelper } from '../helpers/validateFormHelper'
+import { validateFormHelper, formatValueToValidate } from '../helpers/validateFormHelper'
+import { createAccountService} from '../services/serviceApi'
 
 interface State {
     email: string,
@@ -17,7 +19,8 @@ interface State {
 };
 
 interface Props{
-
+    currencies: Array<string>,
+    history?: any
 };
 
 export default class CreateAccount extends Component<Props, State>{
@@ -30,7 +33,7 @@ export default class CreateAccount extends Component<Props, State>{
             name: "",
             currency: "",
             innitialValue: "",
-            buttonLoad: true
+            buttonLoad: true,
         };
     };
 
@@ -96,8 +99,22 @@ export default class CreateAccount extends Component<Props, State>{
         return validateFormHelper(this.buttonload, verifyPass);  
     };
 
+    createAccount = (event: FormEvent) => {
+        event.preventDefault();
+        const { name, email, password, innitialValue, currency } = this.state
+        const valueToValidate = formatValueToValidate(innitialValue);
+
+        this.setState({buttonLoad: true}, () => {createAccountService(email, password, valueToValidate, currency, name)
+        .then(res => res.ok? res.json() : console.log(res.statusText))
+        .then(() => {
+            setInterval(() => createBrowserHistory.push("/login"),  3000);
+        })})
+    };
+
     render(){
-        const { email, password, currency, name, confirmPassword, innitialValue, buttonLoad} = this.state
+        const { email, password, currency, name,
+             confirmPassword, innitialValue, buttonLoad} = this.state
+        const { currencies } = this.props
         const formOne = [{
                 label: "Name",
                 value: name,
@@ -115,13 +132,16 @@ export default class CreateAccount extends Component<Props, State>{
             label: "Currency",
             value: currency,
             onChange: this.currency,
-            type: "currency"
+            type: "select",
+            options: currencies 
         },
         {
             label: "Innitial value",
             value: innitialValue,
             onChange: this.innitialValue,
-            type: "text"
+            type: "text",
+            maskMoney: true,
+            precision: 2
         }];
 
         const formThree = [{
@@ -140,7 +160,7 @@ export default class CreateAccount extends Component<Props, State>{
         return(
             <div>
                 <HeaderStyled>Create account</HeaderStyled>
-                <Form >
+                <Form onSubmit={this.createAccount}>
                     <Col md="12">
                         <Forms forms={formOne} />
                         <Forms forms={formTwo} />
