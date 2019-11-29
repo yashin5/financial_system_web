@@ -6,10 +6,12 @@ import HeaderFunction from '../components/HeaderFunction'
 import Buttons from '../components/Buttons'
 import formatValueToAPIAccept from '../helpers/currencyHelper'
 import { validateFormHelper, formatValueToValidate } from '../helpers/validateFormHelper'
+import { withdrawnService } from '../services/serviceApi'
 
 interface State {
     value: string,
     buttonLoad: boolean,
+    errors: Array<string>
 };
 
 interface Props{
@@ -21,7 +23,8 @@ export default class Withdraw extends Component<Props, State> {
         super(props);
         this.state = { 
             value: "",
-            buttonLoad: true
+            buttonLoad: true,
+            errors: [""]
         };
     };
 
@@ -40,13 +43,22 @@ export default class Withdraw extends Component<Props, State> {
     withdraw = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const { value } = this.state
+        const { new_balance } = this.props
         const formatedValue = formatValueToAPIAccept( value )
 
-        this.props.new_balance("1000")
+        withdrawnService(formatedValue)
+        .then(res=> res.json())
+        .then(res => {
+            if(res.error){
+            }
+            else{
+                new_balance(res.new_balance)
+            };
+        });        
     };
 
     render(){
-        const { value, buttonLoad } = this.state
+        const { errors, value, buttonLoad } = this.state
         const formOne = [
             {
                 label: "Value",
@@ -69,12 +81,29 @@ export default class Withdraw extends Component<Props, State> {
                         <Buttons buttonLoad={buttonLoad} value="Do!" 
                             type="submit" color="success" size="sm" 
                         />
+                        <ErrorsDiv>
+                            {
+                                errors && errors.map(error => 
+                                    <SpanStyled>{error}</SpanStyled>
+                                )
+                            }
+                        </ErrorsDiv>
                     </ButtonContainer>
                 </Form>
             </Container>
         );
     };
 };
+
+const ErrorsDiv = styled.div`
+    display: flex;
+    flex-direction: row
+`;
+
+const SpanStyled = styled.span`
+    font-size: 0.6rem;
+    color: red
+`;
 
 const ButtonContainer = styled.div`
     display: flex;

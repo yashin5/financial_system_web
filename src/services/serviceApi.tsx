@@ -61,7 +61,7 @@ export const getBalanceService = () => {
 export const depositService = (value: string, currency: string) => {
   const session = localStorage.getItem('token');
   const headers = new Headers({ 'content-type': 'application/json', "authorization": `${session}` });
-  const method = 'post';
+  const method = 'POST';
   const body = JSON.stringify({ value, currency });
   return fetch('https://financial-system.herokuapp.com/api/operations/deposit', {
     method,
@@ -73,7 +73,7 @@ export const depositService = (value: string, currency: string) => {
 export const withdrawnService = (value: string) => {
   const session = localStorage.getItem('token');
   const headers = new Headers({ 'content-type': 'application/json', "authorization": `${session}` });
-  const method = 'post';
+  const method = 'POST';
   const body = JSON.stringify({ value });
   return fetch('https://financial-system.herokuapp.com/api/operations/withdraw', {
     method,
@@ -85,7 +85,7 @@ export const withdrawnService = (value: string) => {
 export const transferService = (email: string, value: string) => {
   const session = localStorage.getItem('token');
   const headers = new Headers({ 'content-type': 'application/json', "authorization": `${session}` });
-  const method = 'post';
+  const method = 'POST';
   const body = JSON.stringify({ email, value });
   return fetch('https://financial-system.herokuapp.com/api/operations/transfer', {
     method,
@@ -103,7 +103,7 @@ export interface SplitList {
 export const splitTransferService = (split_list: Array<any>, value: string) => {
   const session = localStorage.getItem('token');
   const headers = new Headers({ 'content-type': 'application/json', "authorization": `${session}` });
-  const method = 'post';
+  const method = 'POST';
   const body = JSON.stringify({ split_list, value });
   return fetch('https://financial-system.herokuapp.com/api/operations/split', {
     method,
@@ -115,7 +115,7 @@ export const splitTransferService = (split_list: Array<any>, value: string) => {
 export const addContactService = (nickname: string, email: string) => {
   const session = localStorage.getItem('token');
   const headers = new Headers({ 'content-type': 'application/json', "authorization": `${session}` });
-  const method = 'post';
+  const method = 'POST';
   const body = JSON.stringify({ nickname, email });
   return fetch('https://financial-system.herokuapp.com/api/operations/create_contact', {
     method,

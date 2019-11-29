@@ -9,11 +9,12 @@ import Deposit from '../views/Deposit'
 import Transfer from '../views/Transfer'
 import Split from '../views/Split'
 import AddContact from '../views/AddContact';
+import { getBalanceService, getCurrenciesService, getAllContactsService} from '../services/serviceApi'
 
 
 interface Contact {
-    nickname: string,
-    email: string,
+    contact_nickname: string,
+    contact_email: string,
 };
 
 interface State{
@@ -39,14 +40,23 @@ export default class Dashboard extends Component<Props,State>{
     };
 
     componentDidMount = () =>{
+        getBalanceService()
+        .then(res => res.ok? res.json() : console.log(res.statusText))
+        .then(res => this.setState({balance: res.value_in_account}));
+
+        getCurrenciesService()
+        .then(res => res.ok? res.json() : console.log(res.statusText))
+        .then(res => this.setState({currencies: res.currencies}));
+
+        getAllContactsService()
+        .then(res => res.ok? res.json() : console.log(res.statusText))
+        .then(res => this.setState({contact_list: res}))
         this.setState({
             email: "ysantos@stone.com.br",
-            balance: "10.000221",
-            currencies: ["BRL", "USD"],
-            contact_list: [{
-                nickname: "Yashin Sants",
-                email: "ysantos@gmail.com",
-            }]
+            // contact_list: [{
+            //     nickname: "Yashin Sants",
+            //     email: "ysantos@gmail.com",
+            // }]
         });
     };
 
@@ -57,10 +67,11 @@ export default class Dashboard extends Component<Props,State>{
     createNewContact = (new_contact: Contact) => {
         const { contact_list } = this.state;
         const verify_if_contact_already_exist = contact_list.filter(contact => (
-            contact.email !== new_contact.email
+            contact.contact_email !== new_contact.contact_email
         ));
 
         const new_contact_list = [...verify_if_contact_already_exist, new_contact]
+        console.log(new_contact_list)
             
         this.setState({contact_list: new_contact_list});
     };

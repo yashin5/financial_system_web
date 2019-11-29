@@ -3,8 +3,8 @@ import { Table } from 'reactstrap';
 import sortObjectListHelper from '../helpers/sortObjectListHelper'
 
 interface Contact {
-    email: string,
-    nickname: string,
+    contact_email: string,
+    contact_nickname: string,
 };
 
 interface Props{
@@ -29,9 +29,9 @@ const ContactsTable = (props: Props) => {
                 {
                     props.contact_list.sort((contactA, contactB) => sortObjectListHelper( contactA, contactB, "nickname" ))
                     .map((contact: Contact) =>(
-                        <tr key={contact.email} onDoubleClick={() => autoFillEmail(contact.email)}>
-                            <td>{contact.email}</td>
-                            <td>{contact.nickname}</td>
+                        <tr key={contact.contact_email} onDoubleClick={() => autoFillEmail(contact.contact_email)}>
+                            <td>{contact.contact_email}</td>
+                            <td>{contact.contact_nickname}</td>
                         </tr>
                     ))
                 }

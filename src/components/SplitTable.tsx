@@ -4,7 +4,7 @@ import sortObjectListHelper from '../helpers/sortObjectListHelper'
 
 interface SplitItem {
     email: string,
-    percent: string,
+    percent: number,
 };
 
 interface Props{
