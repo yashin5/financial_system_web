@@ -16,6 +16,7 @@ interface State {
     name: string,
     innitialValue: string,
     buttonLoad: boolean,
+    errors: Array<string>
 };
 
 interface Props{
@@ -34,6 +35,7 @@ export default class CreateAccount extends Component<Props, State>{
             currency: "",
             innitialValue: "",
             buttonLoad: true,
+            errors: [""]
         };
     };
 
@@ -105,15 +107,25 @@ export default class CreateAccount extends Component<Props, State>{
         const valueToValidate = formatValueToValidate(innitialValue);
 
         this.setState({buttonLoad: true}, () => {createAccountService(email, password, valueToValidate, currency, name)
-        .then(res => res.ok? res.json() : console.log(res.statusText))
-        .then(() => {
-            setInterval(() => createBrowserHistory.push("/login"),  3000);
+        .then(res => res.json())
+        .then(res => {
+            if(res.error){
+                const { errors } = this.state;
+                const errorNames = Object.keys(res.error)
+                const errorValues = errorNames.map(error => res.error[error])
+                console.log(errors)
+                this.setState({errors: errorValues})
+            }
+            else{
+                createBrowserHistory.push("/login");
+            }            
         })})
     };
 
     render(){
-        const { email, password, currency, name,
+        const { errors, email, password, currency, name,
              confirmPassword, innitialValue, buttonLoad} = this.state
+             console.log(errors)
         const { currencies } = this.props
         const formOne = [{
                 label: "Name",
@@ -171,6 +183,11 @@ export default class CreateAccount extends Component<Props, State>{
                         <Buttons style={buttonStyle} buttonLoad={buttonLoad} 
                             type="submit" color="success" size="sm" value="Create!"
                         />
+                        {
+                            errors && errors.map(error => 
+                                <SpanStyled>{error}</SpanStyled>
+                            )
+                        }
                         <NavLinkStyled to="/login">Already have an account? click here!</NavLinkStyled>
                     </ButtonContainer>
                 </Form>            
@@ -178,6 +195,11 @@ export default class CreateAccount extends Component<Props, State>{
         )
     };
 };
+
+const SpanStyled = styled.span`
+    font-size: 0.6rem;
+    color: red
+`;
 
 const buttonStyle = {width: "230px"}
 

@@ -50,7 +50,7 @@ const DivContainer = styled.div`
     align-items: center;
     flex-direction: column;
     border-radius: 5px;
-    margin-top: 10%;
+    margin-top: 5%;
     box-shadow: 0px 0px 0px 2px #ccc
 
 `;
