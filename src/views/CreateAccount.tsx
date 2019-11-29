@@ -110,11 +110,9 @@ export default class CreateAccount extends Component<Props, State>{
         .then(res => res.json())
         .then(res => {
             if(res.error){
-                const { errors } = this.state;
                 const errorNames = Object.keys(res.error)
-                const errorValues = errorNames.map(error => res.error[error])
-                console.log(errors)
-                this.setState({errors: errorValues})
+                const errors = errorNames.map(error => res.error[error])
+                this.setState({ errors })
             }
             else{
                 createBrowserHistory.push("/login");

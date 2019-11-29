@@ -13,20 +13,12 @@ export const validateTokenService = () =>{
   const session = localStorage.getItem('token');
   const method = 'POST';
   const headers = new Headers({ 'content-type': 'application/json' });  
-  const body = JSON.stringify({ session });
+  const body = JSON.stringify({ token: session });
   return fetch(`https://financial-system.herokuapp.com/api/auth/validate_token`, {
     method,
     headers,    
     body
   })  
-  .then(res => {
-    if(res.ok){ 
-      return res.json()
-    };
-    throw res
-  })
-  // .then(res => res.is_valid)
-  // .catch(err => err.statusText === "Unauthorized" && false)
 }
 
 export const createAccountService = (email: string, password: string, value: string, currency: string, name: string) => {
