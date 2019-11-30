@@ -1,5 +1,5 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react'
-import { Col, Container, Form } from 'reactstrap'
+import { Col, Form } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
@@ -71,7 +71,7 @@ export default class Withdraw extends Component<Props, State> {
         ];
 
         return(
-            <Container>
+            <div>
                 <HeaderFunction header="Withdraw" />
                 <Form onSubmit={this.withdraw}>
                     <Col md="6">
@@ -90,7 +90,7 @@ export default class Withdraw extends Component<Props, State> {
                         </ErrorsDiv>
                     </ButtonContainer>
                 </Form>
-            </Container>
+            </div>
         );
     };
 };

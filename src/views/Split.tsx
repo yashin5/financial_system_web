@@ -1,5 +1,5 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react'
-import { Col, Container, Form } from 'reactstrap'
+import { Col, Form } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
@@ -74,11 +74,12 @@ export default class Split extends Component<Props, State> {
     };
 
     value = (event: ChangeEvent<HTMLInputElement>) =>{
-        const { split_list, percent } = this.state;
-        const value = event.target.value;
+        const { split_list } = this.state;
+        const value = event.target.value
+        const valueToValidate = formatValueToValidate(value)
         const actualPercent = this.totalPercent(split_list);
         const verifyActualPercent = actualPercent === 100? actualPercent : "";
-        const validateInputs = { actualPercent, verifyActualPercent };
+        const validateInputs = { valueToValidate, verifyActualPercent };
 
         this.setState({ value });
                 
@@ -109,7 +110,7 @@ export default class Split extends Component<Props, State> {
         this.setState({buttonLoad2: true}, () => {
             splitTransferService( split_list, formatedValue )
             .then(res => res.json())
-            .then(res => console.log(res));            
+            .then(res => new_balance(res.new_balance));            
         });
     };
 

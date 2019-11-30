@@ -1,5 +1,5 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react'
-import { Col, Container, Form } from 'reactstrap'
+import { Col, Form } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'

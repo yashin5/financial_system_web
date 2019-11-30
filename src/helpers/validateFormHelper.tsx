@@ -9,8 +9,6 @@ export const validateFormHelper = (callbackButton: Function, fields: Object) => 
     return callbackButton(true);
 };
 
-
-
 export const formatValueToValidate = (value: string) =>{
     const valueInFloatFormat = value.replace(",",".");
     const valueToFloat = parseFloat(valueInFloatFormat);
