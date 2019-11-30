@@ -4,6 +4,7 @@ import { Col, Form } from 'reactstrap'
 import styled from 'styled-components'
 import Buttons from '../components/Buttons'
 import Forms from '../components/Forms'
+import Errors from '../components/Errors'
 import { validateFormHelper } from '../helpers/validateFormHelper'
 import { authenticateService, validateTokenService } from '../services/serviceApi'
 import createBrowserHistory from '../history'
@@ -61,28 +62,23 @@ export default class Login extends Component<Props, State>{
             .then(res => res.json())
             .then(res => {
                 if(res.error){
-                    const errorNames = Object.keys(res.error)
-                    const errors = errorNames.map(error => res.error[error])
-                    this.setState({ errors })
+                    this.setState({ errors: res.error })
                 }
                 else{
                     localStorage.setItem("token", res.token);
                     validateTokenService().then(res => res.json())
                     .then(res => {
-                        console.log(res)
-                        if(res.error){                            
-                            const errorNames = Object.keys(res.error)
-                            const errors = errorNames.map(error => res.error[error])
-                            this.setState({ errors })                            
+                        if(res.error){                                                        
+                            this.setState({ errors: res.error })                            
                         }
                         else{
                             createBrowserHistory.push("/home")
-                        }
+                        };
                     })                    
-                }                
+                };                
             })
-        )
-    }
+        );
+    };
 
     render(){
         const { errors, email, password, buttonLoad} = this.state
@@ -111,13 +107,7 @@ export default class Login extends Component<Props, State>{
 
                     <ButtonContainer>
                         <Buttons style={buttonStyle} buttonLoad={buttonLoad} type="submit" color="success" size="sm" value="Login!"/>
-                        <ErrorsDiv>
-                            {
-                                errors && errors.map(error => 
-                                    <SpanStyled>{error}</SpanStyled>
-                                )
-                            }
-                        </ErrorsDiv>
+                        <Errors errors ={errors}/>
                         <NavLinkStyled to="/create_account">dont have an account? click here!</NavLinkStyled>
                     </ButtonContainer>
                 </Form>            
@@ -126,16 +116,7 @@ export default class Login extends Component<Props, State>{
     }
 };
 
-const ErrorsDiv = styled.div`
-    display: flex;
-    flex-direction: row
-`
-const SpanStyled = styled.span`
-    font-size: 0.6rem;
-    color: red
-`;
-
-const buttonStyle = {width: "230px"}
+const buttonStyle = {width: "230px"};
 
 const ButtonContainer = styled.div`
     display: flex;
@@ -156,4 +137,4 @@ const HeaderStyled = styled.h1`
     text-align: center;
     font-size: 1.5rem;
     margin-top: 25px
-`
+`;

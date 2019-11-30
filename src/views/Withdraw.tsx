@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
 import Buttons from '../components/Buttons'
+import Errors from '../components/Errors'
 import formatValueToAPIAccept from '../helpers/currencyHelper'
 import { validateFormHelper, formatValueToValidate } from '../helpers/validateFormHelper'
 import { withdrawnService } from '../services/serviceApi'
@@ -31,9 +32,9 @@ export default class Withdraw extends Component<Props, State> {
     buttonload = (buttonLoad: boolean) => (this.setState({ buttonLoad }));
 
     value = (event: ChangeEvent<HTMLInputElement>) =>{        
-        const value = event.target.value
-        const valueToValidate = formatValueToValidate(value)
-        const validateInputs = { valueToValidate } 
+        const value = event.target.value;
+        const valueToValidate = formatValueToValidate(value);
+        const validateInputs = { valueToValidate };
         this.setState({value: value});
         
         validateFormHelper(this.buttonload, validateInputs);
@@ -42,14 +43,15 @@ export default class Withdraw extends Component<Props, State> {
 
     withdraw = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const { value } = this.state
-        const { new_balance } = this.props
-        const formatedValue = formatValueToAPIAccept( value )
+        const { value } = this.state;
+        const { new_balance } = this.props;
+        const formatedValue = formatValueToAPIAccept( value );
 
         withdrawnService(formatedValue)
         .then(res=> res.json())
         .then(res => {
             if(res.error){
+                this.setState( { errors: res.error } )
             }
             else{
                 new_balance(res.new_balance)
@@ -81,13 +83,7 @@ export default class Withdraw extends Component<Props, State> {
                         <Buttons buttonLoad={buttonLoad} value="Do!" 
                             type="submit" color="success" size="sm" 
                         />
-                        <ErrorsDiv>
-                            {
-                                errors && errors.map(error => 
-                                    <SpanStyled>{error}</SpanStyled>
-                                )
-                            }
-                        </ErrorsDiv>
+                        <Errors errors ={errors}/>
                     </ButtonContainer>
                 </Form>
             </div>
@@ -95,18 +91,12 @@ export default class Withdraw extends Component<Props, State> {
     };
 };
 
-const ErrorsDiv = styled.div`
-    display: flex;
-    flex-direction: row
-`;
-
-const SpanStyled = styled.span`
-    font-size: 0.6rem;
-    color: red
-`;
-
 const ButtonContainer = styled.div`
     display: flex;
-    justify-content: center;
-    width: 530px ;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 50%;
+    
 `;
+

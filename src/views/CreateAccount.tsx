@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Col, Form } from 'reactstrap'
 import styled from 'styled-components'
 import createBrowserHistory from "../history";
+import Errors from '../components/Errors'
 import Buttons from '../components/Buttons'
 import Forms from '../components/Forms'
 import { validateFormHelper, formatValueToValidate } from '../helpers/validateFormHelper'
@@ -16,7 +17,7 @@ interface State {
     name: string,
     innitialValue: string,
     buttonLoad: boolean,
-    errors: Array<string>
+    errors: Array<string> | string,
 };
 
 interface Props{
@@ -110,9 +111,7 @@ export default class CreateAccount extends Component<Props, State>{
         .then(res => res.json())
         .then(res => {
             if(res.error){
-                const errorNames = Object.keys(res.error)
-                const errors = errorNames.map(error => res.error[error])
-                this.setState({ errors })
+                this.setState({ errors: res.error })
             }
             else{
                 createBrowserHistory.push("/login");
@@ -123,7 +122,6 @@ export default class CreateAccount extends Component<Props, State>{
     render(){
         const { errors, email, password, currency, name,
              confirmPassword, innitialValue, buttonLoad} = this.state
-             console.log(errors)
         const { currencies } = this.props
         const formOne = [{
                 label: "Name",
@@ -181,11 +179,7 @@ export default class CreateAccount extends Component<Props, State>{
                         <Buttons style={buttonStyle} buttonLoad={buttonLoad} 
                             type="submit" color="success" size="sm" value="Create!"
                         />
-                        {
-                            errors && errors.map(error => 
-                                <SpanStyled>{error}</SpanStyled>
-                            )
-                        }
+                        <Errors errors ={errors}/>
                         <NavLinkStyled to="/login">Already have an account? click here!</NavLinkStyled>
                     </ButtonContainer>
                 </Form>            
