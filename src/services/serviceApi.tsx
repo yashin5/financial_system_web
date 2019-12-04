@@ -134,3 +134,15 @@ export const getAllContactsService = () => {
   });
 };
 
+export const updateContactService = (new_nickname: string, email: string) => {
+  const session = localStorage.getItem('token');
+  const headers = new Headers({ 'content-type': 'application/json', "authorization": `${session}` });
+  const method = 'POST';
+  const body = JSON.stringify({ new_nickname, email });
+  return fetch('https://financial-system.herokuapp.com/api/operations/update_contact_nickname', {
+    method,
+    headers,
+    body,
+  });
+};
+

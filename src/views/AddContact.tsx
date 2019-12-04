@@ -6,7 +6,7 @@ import HeaderFunction from '../components/HeaderFunction'
 import ContactsTable from '../components/ContactsTable';
 import Buttons from '../components/Buttons'
 import { validateFormHelper } from '../helpers/validateFormHelper'
-import { addContactService } from '../services/serviceApi'
+import { addContactService, updateContactService } from '../services/serviceApi'
 
 
 
@@ -95,7 +95,7 @@ export default class AddContact extends Component<Props, State> {
         this.activeOrDeactiveButton(validateInputs, email);
     };
 
-    contacts = (event: FormEvent<HTMLFormElement>) => {
+    createContacts = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();        
         const { email, nickname } = this.state;
         const { create_contact } = this.props
@@ -108,9 +108,22 @@ export default class AddContact extends Component<Props, State> {
             else{
                 create_contact({ contact_nickname: nickname, contact_email: email });    
             }                        
-        })
+        });
+    };
 
-        
+    updateContact = () => {
+        const { email, nickname } = this.state;
+        const { create_contact } = this.props
+        updateContactService( nickname, email )
+        .then(res => res.json())
+        .then(res => {
+            if(res.error){
+                this.setState({errors: [res.error]})
+            } 
+            else{
+                create_contact({ contact_nickname: nickname, contact_email: email });    
+            }                        
+        });        
     };
 
     render(){
@@ -136,7 +149,7 @@ export default class AddContact extends Component<Props, State> {
                 <Col md="6">
                 <HeaderFunction header="Contacts" />
                 <div style={flex}>
-                    <Form onSubmit={this.contacts}>
+                    <Form onSubmit={this.createContacts}>
                         <Col md="12">
                             <Forms forms={formOne} />
                         </Col>
@@ -154,7 +167,7 @@ export default class AddContact extends Component<Props, State> {
                                     }
                                 </ErrorsDiv>    
                                 <ErrorsDiv>
-                                    <Buttons buttonLoad={buttonLoad2} value="Update contact"
+                                    <Buttons onClick={this.updateContact} buttonLoad={buttonLoad2} value="Update contact"
                                         type="button" color="secondary" size="sm"
                                     />
                                     {
