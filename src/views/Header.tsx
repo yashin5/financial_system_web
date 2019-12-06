@@ -1,15 +1,15 @@
 import React from 'react'
-import { Container } from 'reactstrap'
 import styled from 'styled-components'
+import createBrowserHistory from '../history'
 
-interface Props{
-    history?: any,
+interface Props{    
     email: string
 };
 
 const Header = (props: Props) =>{
     const logout = () =>{
-        props.history.push("/login")
+        localStorage.clear();
+        createBrowserHistory.push("/login");
     };
 
     return (

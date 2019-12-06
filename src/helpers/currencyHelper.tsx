@@ -1,12 +1,12 @@
 const formatValueToAPIAccept = (value: string) =>{
     if(value.includes(".")){
-        const whitoutDot = value.replace(".", "")
+        const withoutDot = value.replace(".", "")
 
-        return formatValueToAPIAccept(whitoutDot)
+        return formatValueToAPIAccept(withoutDot)
     }
     else{
-        const whitoutComma = value.replace(",", ".")
-        return whitoutComma
+        const withoutComma = value.replace(",", ".")
+        return withoutComma
     };
 };
 

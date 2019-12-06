@@ -1,26 +1,46 @@
 import React, {Component} from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import  {Container } from 'reactstrap'
+import createBrowserHistory from "../history";
 import styled from 'styled-components'
 import Login from '../views/Login'
 import CreateAccount from '../views/CreateAccount'
+import { getCurrenciesService } from '../services/serviceApi'
 
+interface State {
+    currencies: Array<string>
+};
 
-export default class Home extends Component<{},{}>{
+export default class Home extends Component<{},State>{
+    constructor(props){
+        super(props);
+        this.state = {currencies: [""]}
+    };
+
+    componentDidMount(){
+        getCurrenciesService()
+        .then(res => res.ok? res.json() : console.log(res.statusText))
+        .then(res =>  this.setState({ currencies: res.currencies }))
+    };
+
     render(){
+        const { currencies } = this.state;
+
         return(
-            <BrowserRouter>
+            <Router history={createBrowserHistory}>
                 <Container style={{display: "flex", justifyContent: "center"}}>
                     <DivContainer>
                         <Switch>
                             <Route exact path="/login" component={() => <Login />} />
-                            <Route exact path="/create_account" component={() => <CreateAccount />} />
+                            <Route exact path="/create_account" 
+                            component={() => <CreateAccount  {...this.props} currencies={currencies} />} 
+                            />
                         </Switch>
                     </DivContainer>
                 </Container>
-            </BrowserRouter>
+            </Router>
         )
-    }
+    };
 };
 
 const DivContainer = styled.div`
@@ -30,7 +50,7 @@ const DivContainer = styled.div`
     align-items: center;
     flex-direction: column;
     border-radius: 5px;
-    margin-top: 10%;
+    margin-top: 5%;
     box-shadow: 0px 0px 0px 2px #ccc
 
-`
+`;

@@ -1,18 +1,19 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react'
-import { Col, Container, Form } from 'reactstrap'
+import { Col, Form } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
 import ContactsTable from '../components/ContactsTable';
 import Buttons from '../components/Buttons'
 import { validateFormHelper } from '../helpers/validateFormHelper'
+import { addContactService, updateContactService } from '../services/serviceApi'
 
 
 
 
 interface Contact {
-    nickname: string,
-    email: string,
+    contact_nickname: string,
+    contact_email: string,
 };
 
 interface State {
@@ -20,6 +21,7 @@ interface State {
     nickname: string,
     buttonLoad1: boolean,
     buttonLoad2: boolean,
+    errors: Array<string>
 };
 
 interface Props{
@@ -34,7 +36,8 @@ export default class AddContact extends Component<Props, State> {
             email: "",
             nickname: "",
             buttonLoad1: true,
-            buttonLoad2: true
+            buttonLoad2: true,
+            errors: [""],
         };
     };
 
@@ -43,7 +46,7 @@ export default class AddContact extends Component<Props, State> {
 
     verifyIfContactAlreadyExist = (email: string) => {
         const { contact_list } = this.props;
-        const verifyng_list = contact_list.filter((contact: Contact) => contact.email === email);
+        const verifyng_list = contact_list.filter((contact: Contact) => contact.contact_email === email);
 
         if (verifyng_list.length !== 0){
             this.buttonload1(true)
@@ -92,15 +95,39 @@ export default class AddContact extends Component<Props, State> {
         this.activeOrDeactiveButton(validateInputs, email);
     };
 
-    contacts = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    createContacts = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();        
         const { email, nickname } = this.state;
+        const { create_contact } = this.props
+        addContactService( nickname, email )
+        .then(res => res.json())
+        .then(res => {
+            if(res.error){
+                this.setState({errors: [res.error]})
+            } 
+            else{
+                create_contact({ contact_nickname: nickname, contact_email: email });    
+            }                        
+        });
+    };
 
-        this.props.create_contact({email, nickname});
+    updateContact = () => {
+        const { email, nickname } = this.state;
+        const { create_contact } = this.props
+        updateContactService( nickname, email )
+        .then(res => res.json())
+        .then(res => {
+            if(res.error){
+                this.setState({errors: [res.error]})
+            } 
+            else{
+                create_contact({ contact_nickname: nickname, contact_email: email });    
+            }                        
+        });        
     };
 
     render(){
-        const { email, nickname, buttonLoad1, buttonLoad2 } = this.state;
+        const { errors, email, nickname, buttonLoad1, buttonLoad2 } = this.state;
         const { contact_list } = this.props;
         const formOne = [
             {
@@ -122,18 +149,33 @@ export default class AddContact extends Component<Props, State> {
                 <Col md="6">
                 <HeaderFunction header="Contacts" />
                 <div style={flex}>
-                    <Form onSubmit={this.contacts}>
+                    <Form onSubmit={this.createContacts}>
                         <Col md="12">
                             <Forms forms={formOne} />
                         </Col>
                         <ButtonContainer>
                             <ButtonContainerTwo>
-                                <Buttons buttonLoad={buttonLoad1} type="submit" color="success"
-                                    size="sm" value="Create contact" 
-                                />
-                                <Buttons buttonLoad={buttonLoad2} value="Update contact"
-                                    type="submit" color="secondary" size="sm"
-                                />
+
+                                <ErrorsDiv>
+                                    <Buttons buttonLoad={buttonLoad1} type="submit" color="success"
+                                        size="sm" value="Create contact" 
+                                    />
+                                    {
+                                        errors && errors.map(error => 
+                                            <SpanStyled>{error}</SpanStyled>
+                                        )
+                                    }
+                                </ErrorsDiv>    
+                                <ErrorsDiv>
+                                    <Buttons onClick={this.updateContact} buttonLoad={buttonLoad2} value="Update contact"
+                                        type="button" color="secondary" size="sm"
+                                    />
+                                    {
+                                        false && errors.map(error => 
+                                            <SpanStyled>{error}</SpanStyled>
+                                        )
+                                    }
+                                </ErrorsDiv>                                
                             </ButtonContainerTwo>
                         </ButtonContainer>
                     </Form>
@@ -146,6 +188,15 @@ export default class AddContact extends Component<Props, State> {
         );
     };
 };
+
+const ErrorsDiv = styled.div`
+    display: flex;
+    flex-direction: column
+`
+const SpanStyled = styled.span`
+    font-size: 0.6rem;
+    color: red
+`;
 
 const flex = {display: "flex"}
 

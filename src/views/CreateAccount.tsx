@@ -1,10 +1,13 @@
-import React, { Component, ChangeEvent } from 'react'
+import React, { Component, ChangeEvent, FormEvent } from 'react'
 import { NavLink } from 'react-router-dom';
 import { Col, Form } from 'reactstrap'
 import styled from 'styled-components'
+import createBrowserHistory from "../history";
+import Errors from '../components/Errors'
 import Buttons from '../components/Buttons'
 import Forms from '../components/Forms'
-import { validateFormHelper } from '../helpers/validateFormHelper'
+import { validateFormHelper, formatValueToValidate } from '../helpers/validateFormHelper'
+import { createAccountService} from '../services/serviceApi'
 
 interface State {
     email: string,
@@ -14,10 +17,12 @@ interface State {
     name: string,
     innitialValue: string,
     buttonLoad: boolean,
+    errors: Array<string> | string,
 };
 
 interface Props{
-
+    currencies: Array<string>,
+    history?: any
 };
 
 export default class CreateAccount extends Component<Props, State>{
@@ -30,7 +35,8 @@ export default class CreateAccount extends Component<Props, State>{
             name: "",
             currency: "",
             innitialValue: "",
-            buttonLoad: true
+            buttonLoad: true,
+            errors: [""]
         };
     };
 
@@ -96,8 +102,27 @@ export default class CreateAccount extends Component<Props, State>{
         return validateFormHelper(this.buttonload, verifyPass);  
     };
 
+    createAccount = (event: FormEvent) => {
+        event.preventDefault();
+        const { name, email, password, innitialValue, currency } = this.state
+        const valueToValidate = formatValueToValidate(innitialValue);
+
+        this.setState({buttonLoad: true}, () => {createAccountService(email, password, valueToValidate, currency, name)
+        .then(res => res.json())
+        .then(res => {
+            if(res.error){
+                this.setState({ errors: res.error })
+            }
+            else{
+                createBrowserHistory.push("/login");
+            }            
+        })})
+    };
+
     render(){
-        const { email, password, currency, name, confirmPassword, innitialValue, buttonLoad} = this.state
+        const { errors, email, password, currency, name,
+             confirmPassword, innitialValue, buttonLoad} = this.state
+        const { currencies } = this.props
         const formOne = [{
                 label: "Name",
                 value: name,
@@ -115,13 +140,16 @@ export default class CreateAccount extends Component<Props, State>{
             label: "Currency",
             value: currency,
             onChange: this.currency,
-            type: "currency"
+            type: "select",
+            options: currencies 
         },
         {
             label: "Innitial value",
             value: innitialValue,
             onChange: this.innitialValue,
-            type: "text"
+            type: "text",
+            maskMoney: true,
+            precision: 2
         }];
 
         const formThree = [{
@@ -140,7 +168,7 @@ export default class CreateAccount extends Component<Props, State>{
         return(
             <div>
                 <HeaderStyled>Create account</HeaderStyled>
-                <Form >
+                <Form onSubmit={this.createAccount}>
                     <Col md="12">
                         <Forms forms={formOne} />
                         <Forms forms={formTwo} />
@@ -151,6 +179,7 @@ export default class CreateAccount extends Component<Props, State>{
                         <Buttons style={buttonStyle} buttonLoad={buttonLoad} 
                             type="submit" color="success" size="sm" value="Create!"
                         />
+                        <Errors errors ={errors}/>
                         <NavLinkStyled to="/login">Already have an account? click here!</NavLinkStyled>
                     </ButtonContainer>
                 </Form>            
@@ -158,7 +187,6 @@ export default class CreateAccount extends Component<Props, State>{
         )
     };
 };
-
 const buttonStyle = {width: "230px"}
 
 const ButtonContainer = styled.div`

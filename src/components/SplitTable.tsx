@@ -1,10 +1,11 @@
 import React from 'react'
 import { Table } from 'reactstrap';
 import sortObjectListHelper from '../helpers/sortObjectListHelper'
+import styled from 'styled-components'
 
 interface SplitItem {
     email: string,
-    percent: string,
+    percent: number,
 };
 
 interface Props{
@@ -30,10 +31,10 @@ const SplitTable = (props: Props) => {
                 {
                     props.split_list.sort((a, b) => sortObjectListHelper(a, b, "percent"))
                     .map((splitItem: SplitItem) =>(
-                        <tr key={splitItem.email} onDoubleClick={() => editItem(splitItem)}>
+                        <StyledTr key={splitItem.email} onDoubleClick={() => editItem(splitItem)}>
                             <td>{splitItem.email}</td>
                             <td>{splitItem.percent}</td>
-                        </tr>
+                        </StyledTr>
                     ))
                 }
             </tbody>
@@ -48,3 +49,11 @@ const SplitTable = (props: Props) => {
 };
 
 export default SplitTable
+
+
+const StyledTr = styled.tr`
+    &:hover{
+        opacity: 0.5;
+        cursor: pointer
+    }
+`

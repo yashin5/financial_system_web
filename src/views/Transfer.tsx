@@ -1,12 +1,12 @@
 import React, {Component, FormEvent, ChangeEvent} from 'react'
-import { Col, Container, Form } from 'reactstrap'
+import { Col, Form } from 'reactstrap'
 import styled from 'styled-components'
 import Forms from '../components/Forms'
 import HeaderFunction from '../components/HeaderFunction'
 import Buttons from '../components/Buttons'
 import formatValueToAPIAccept from '../helpers/currencyHelper'
 import { validateFormHelper, formatValueToValidate } from '../helpers/validateFormHelper'
-
+import { transferService } from '../services/serviceApi'
 
 
 interface State {
@@ -53,12 +53,14 @@ export default class Deposit extends Component<Props, State> {
         validateFormHelper(this.buttonload, validateInputs)      
     };
 
-    transfer = (event: FormEvent<HTMLFormElement>) => {
+    doTransfer = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const { value } = this.state
+        const { value, email} = this.state
+        const { new_balance } = this.props
         const formatedValue = formatValueToAPIAccept( value )
-
-        this.props.new_balance("1000")
+        transferService(email, formatedValue)
+        .then(res => res.json())
+        .then(res => new_balance(res.new_balance));
     };
 
     render(){
@@ -79,9 +81,9 @@ export default class Deposit extends Component<Props, State> {
         }];
 
         return(
-            <Container>
+            <div>
                 <HeaderFunction header="Transfer" />
-                <Form onSubmit={this.transfer}>
+                <Form onSubmit={this.doTransfer}>
                     <Col md="6">
                         <Forms forms={formOne} />
                     </Col>
@@ -91,7 +93,7 @@ export default class Deposit extends Component<Props, State> {
                         />
                     </ButtonContainer>
                 </Form>
-            </Container>
+            </div>
         );
     };
 };
