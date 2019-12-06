@@ -187,12 +187,6 @@ export default class CreateAccount extends Component<Props, State>{
         )
     };
 };
-
-const SpanStyled = styled.span`
-    font-size: 0.6rem;
-    color: red
-`;
-
 const buttonStyle = {width: "230px"}
 
 const ButtonContainer = styled.div`
