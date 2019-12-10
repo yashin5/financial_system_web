@@ -8,6 +8,7 @@ import Buttons from '../components/Buttons'
 import formatValueToAPIAccept from '../helpers/currencyHelper'
 import { validateFormHelper, formatValueToValidate } from '../helpers/validateFormHelper'
 import { splitTransferService } from '../services/serviceApi'
+import Errors from '../components/Errors'
 
 interface SplitItem {
     email: string,
@@ -21,7 +22,8 @@ interface State {
     totalPercent: number,
     split_list: Array<SplitItem>,
     buttonLoad1: boolean,
-    buttonLoad2: boolean
+    buttonLoad2: boolean,
+    errors: Array<string>,
 };
 
 interface Props{
@@ -38,7 +40,8 @@ export default class Split extends Component<Props, State> {
             percent: 0,
             split_list: [],
             buttonLoad1: true,
-            buttonLoad2: true
+            buttonLoad2: true,
+            errors: [""]
         };
     };
 
@@ -88,13 +91,12 @@ export default class Split extends Component<Props, State> {
 
     percent = (event: ChangeEvent<HTMLInputElement>) => {        
         const { email, split_list } = this.state;
-        const percent = event.target.value;
+        const percent = event.target.value.replace("-", "");
         const percentFloat = parseFloat(percent);
         const validateInputs = { email, percent: this.validateTotalPercent(split_list, percentFloat) };
-
         this.setPercent( percentFloat );
-     
-        return validateFormHelper(this.buttonload1, validateInputs);        
+                
+        return validateFormHelper(this.buttonload1, validateInputs)
     };
 
     setPercent = (percent: number) => {
@@ -110,7 +112,14 @@ export default class Split extends Component<Props, State> {
         this.setState({buttonLoad2: true}, () => {
             splitTransferService( split_list, formatedValue )
             .then(res => res.json())
-            .then(res => new_balance(res.new_balance));            
+            .then(res => {
+                if(res.error){
+                    this.setState( { errors: res.error } )
+                }
+                else{
+                    new_balance(res.new_balance)
+                };
+            });             
         });
     };
 
@@ -148,7 +157,7 @@ export default class Split extends Component<Props, State> {
     };
 
     render(){
-        const { totalPercent, email, value, percent, split_list, buttonLoad1, buttonLoad2} = this.state
+        const { totalPercent, email, value, percent, split_list, buttonLoad1, buttonLoad2, errors } = this.state
         const formOne = [{
             label: "Email",
             value: email,
@@ -197,6 +206,7 @@ export default class Split extends Component<Props, State> {
                                     onClick={this.addItemToSplitTable}
                                 />
                             </ButtonContainerTwo>
+                            <Errors errors ={errors}/>
                         </ButtonContainer>
                     </Form>
                     <Col md="7">
@@ -218,6 +228,7 @@ const SplitContainerDelimiter = styled.div`
 `;
 
 const ButtonContainerTwo = styled.div`
+    position: relative;
     display: flex;
     justify-content: space-around;
     width: 200px;
@@ -226,6 +237,7 @@ const ButtonContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     width: 530px ;
 `;
 

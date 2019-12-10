@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 const inputFieldFormat = (formProps: any) =>{
     if(formProps.maskMoney){
-        return <MaskedInput name={formProps.label} value={formProps.value} onChangeEvent={formProps.onChange} 
+        return <MaskedInput allowNegative={false} name={formProps.label} value={formProps.value} onChangeEvent={formProps.onChange} 
         precision={formProps.precision} decimalSeparator="," thousandSeparator="." 
         />
     }

@@ -115,8 +115,9 @@ export default class CreateAccount extends Component<Props, State>{
             }
             else{
                 createBrowserHistory.push("/login");
-            }            
-        })})
+            };            
+        });
+        });
     };
 
     render(){
