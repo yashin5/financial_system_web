@@ -111,12 +111,15 @@ export default class CreateAccount extends Component<Props, State>{
         .then(res => res.json())
         .then(res => {
             if(res.error){
+                console.log(res.error)
+                console.log("aqui")
                 this.setState({ errors: res.error })
             }
             else{
                 createBrowserHistory.push("/login");
-            }            
-        })})
+            };            
+        });
+        });
     };
 
     render(){

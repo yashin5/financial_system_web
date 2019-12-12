@@ -7,13 +7,14 @@ import Buttons from '../components/Buttons'
 import formatValueToAPIAccept from '../helpers/currencyHelper'
 import { validateFormHelper, formatValueToValidate } from '../helpers/validateFormHelper'
 import { depositService } from '../services/serviceApi'
-
+import Errors from '../components/Errors'
 
 interface State {
     value: string,
     currency: string,
     currencies: Array<string>,
     buttonLoad: boolean,
+    errors: Array<string>,
 };
 
 interface Props{
@@ -28,7 +29,8 @@ export default class Deposit extends Component<Props, State> {
             value: "",
             currency: "",
             currencies: this.props.currencies,
-            buttonLoad: true
+            buttonLoad: true,
+            errors: [""]
         };
     };
 
@@ -61,13 +63,21 @@ export default class Deposit extends Component<Props, State> {
         const { value, currency } = this.state;
         const { new_balance } = this.props;
         const formatedValue = formatValueToAPIAccept( value );
+
         depositService(formatedValue, currency)
         .then(res => res.json())
-        .then(res =>{ new_balance(res.new_balance)});        
+        .then(res => {
+            if(res.error){
+                this.setState( { errors: res.error } )
+            }
+            else{
+                new_balance(res.new_balance)
+            };
+        });    
     };
 
     render(){
-        const { value, currency, currencies, buttonLoad} = this.state
+        const { value, currency, currencies, buttonLoad, errors } = this.state
         const formOne = [{
             label: "Value",
             value: value,
@@ -98,8 +108,9 @@ export default class Deposit extends Component<Props, State> {
                         </Col>
                     </FormContainer>
                     <ButtonContainer>
-                        <Buttons buttonLoad={buttonLoad} type="submit" color="success" size="sm" value="Do!"/>
-                    </ButtonContainer>
+                        <Buttons buttonLoad={buttonLoad} type="submit" color="success" size="sm" value="Do!"/>                        
+                        <Errors errors ={errors}/>
+                    </ButtonContainer>                    
                 </Form>
             </div>
         );
@@ -109,8 +120,10 @@ export default class Deposit extends Component<Props, State> {
 
 const ButtonContainer = styled.div`
     display: flex;
-    justify-content: center;
-    width: 530px ;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 50%;    
 `;
 
 const FormContainer = styled.div`

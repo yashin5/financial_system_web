@@ -7,12 +7,13 @@ import Buttons from '../components/Buttons'
 import formatValueToAPIAccept from '../helpers/currencyHelper'
 import { validateFormHelper, formatValueToValidate } from '../helpers/validateFormHelper'
 import { transferService } from '../services/serviceApi'
-
+import Errors from '../components/Errors'
 
 interface State {
     email: string,
     value: string,
     buttonLoad: boolean,
+    errors: Array<string>,
 };
 
 interface Props{
@@ -25,7 +26,8 @@ export default class Deposit extends Component<Props, State> {
         this.state = {
             email: "",
             value: "",
-            buttonLoad: true
+            buttonLoad: true,
+            errors: [""]
         };
     };
 
@@ -58,13 +60,21 @@ export default class Deposit extends Component<Props, State> {
         const { value, email} = this.state
         const { new_balance } = this.props
         const formatedValue = formatValueToAPIAccept( value )
+
         transferService(email, formatedValue)
         .then(res => res.json())
-        .then(res => new_balance(res.new_balance));
+        .then(res => {
+            if(res.error){
+                this.setState( { errors: res.error } )
+            }
+            else{
+                new_balance(res.new_balance)
+            };
+        });    
     };
 
     render(){
-        const { email, value, buttonLoad} = this.state
+        const { email, value, buttonLoad, errors } = this.state
         const formOne = [{
             label: "Email",
             value: email,
@@ -91,6 +101,7 @@ export default class Deposit extends Component<Props, State> {
                         <Buttons buttonLoad={buttonLoad} value="Do!" 
                             type="submit" color="success" size="sm" 
                         />
+                        <Errors errors ={errors}/>
                     </ButtonContainer>
                 </Form>
             </div>
@@ -101,6 +112,8 @@ export default class Deposit extends Component<Props, State> {
 
 const ButtonContainer = styled.div`
     display: flex;
-    justify-content: center;
-    width: 530px ;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 50%;    
 `;

@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 const inputFieldFormat = (formProps: any) =>{
     if(formProps.maskMoney){
-        return <MaskedInput name={formProps.label} value={formProps.value} onChangeEvent={formProps.onChange} 
+        return <MaskedInput allowNegative={false} name={formProps.label} value={formProps.value} onChangeEvent={formProps.onChange} 
         precision={formProps.precision} decimalSeparator="," thousandSeparator="." 
         />
     }
@@ -96,4 +96,4 @@ transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     box-shadow: 0px 0px 0px 4px #CECEFD;    
     border: 1px solid #9DC6F1;
   },  
-`
+`;
