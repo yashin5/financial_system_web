@@ -20,7 +20,7 @@ interface State {
     value: string,
     percent: number,
     totalPercent: number,
-    split_list: Array<SplitItem>,
+    splitList: Array<SplitItem>,
     buttonLoad1: boolean,
     buttonLoad2: boolean,
     errors: Array<string>,
@@ -38,7 +38,7 @@ export default class Split extends Component<Props, State> {
             email: "",
             value: "",
             percent: 0,
-            split_list: [],
+            splitList: [],
             buttonLoad1: true,
             buttonLoad2: true,
             errors: [""]
@@ -48,24 +48,24 @@ export default class Split extends Component<Props, State> {
     buttonload1 = (buttonLoad1: boolean) => (this.setState({ buttonLoad1 }));
     buttonload2 = (buttonLoad2: boolean) => (this.setState({ buttonLoad2 }));
 
-    totalPercent = (split_list: Array<SplitItem>) =>{
-        const totalPercent = split_list.reduce((accumulator: number, item: SplitItem) => accumulator + item.percent, 0.00);
+    totalPercent = (splitList: Array<SplitItem>) =>{
+        const totalPercent = splitList.reduce((accumulator: number, item: SplitItem) => accumulator + item.percent, 0.00);
         
         this.setState({ totalPercent });
 
         return totalPercent
     };
 
-    validateTotalPercent = (split_list: Array<SplitItem>, percent: number) =>{
-        return this.totalPercent(split_list) >= 100.00 ||
-        this.totalPercent(split_list) + percent > 100.00? 
+    validateTotalPercent = (splitList: Array<SplitItem>, percent: number) =>{
+        return this.totalPercent(splitList) >= 100.00 ||
+        this.totalPercent(splitList) + percent > 100.00? 
             "" : percent;
     };
 
     email = (event: ChangeEvent<HTMLInputElement>) =>{
-        const { split_list, percent } = this.state;
+        const { splitList, percent } = this.state;
         const email = event.target.value;
-        const totalPercent = percent > 0? this.validateTotalPercent(split_list, percent) : ""
+        const totalPercent = percent > 0? this.validateTotalPercent(splitList, percent) : ""
         const validateInputs = { email, percent: totalPercent };
 
         this.setEmail( email );
@@ -78,10 +78,10 @@ export default class Split extends Component<Props, State> {
     };
 
     value = (event: ChangeEvent<HTMLInputElement>) =>{
-        const { split_list } = this.state;
+        const { splitList } = this.state;
         const value = event.target.value
         const valueToValidate = formatValueToValidate(value)
-        const actualPercent = this.totalPercent(split_list);
+        const actualPercent = this.totalPercent(splitList);
         const verifyActualPercent = actualPercent === 100? actualPercent : "";
         const validateInputs = { valueToValidate, verifyActualPercent };
 
@@ -91,14 +91,14 @@ export default class Split extends Component<Props, State> {
     };
 
     percent = (event: ChangeEvent<HTMLInputElement>) => {        
-        const { email, split_list } = this.state;
-        const percent = event.target.value.replace("-", "");
-        const percentFloat = parseFloat(percent);
-        const totalPercent = percentFloat > 0? this.validateTotalPercent(split_list, percentFloat) : ""
+        const { email, splitList } = this.state;
+        const signedPercent: number = parseFloat(event.target.value);
+        const percent: number = Math.max(0, signedPercent); 
+        const totalPercent = percent > 0 ? this.validateTotalPercent(splitList, percent) : "";
         const validateInputs = { email, percent: totalPercent };
-        this.setPercent( percentFloat );
+        this.setPercent( percent );
                 
-        return validateFormHelper(this.buttonload1, validateInputs)
+        return validateFormHelper(this.buttonload1, validateInputs);
     };
 
     setPercent = (percent: number) => {
@@ -107,12 +107,12 @@ export default class Split extends Component<Props, State> {
 
     doSplit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const { split_list, value } = this.state;
+        const { splitList, value } = this.state;
         const { new_balance } = this.props;
         const formatedValue = formatValueToAPIAccept( value );
         
         this.setState({buttonLoad2: true}, () => {
-            splitTransferService( split_list, formatedValue )
+            splitTransferService( splitList, formatedValue )
             .then(res => res.json())
             .then(res => {
                 if(res.error){
@@ -126,40 +126,35 @@ export default class Split extends Component<Props, State> {
     };
 
     addItemToSplitTable = () => {
-        const { split_list, email, percent, value } = this.state;
+        const { splitList, email, percent, value } = this.state;
         const new_item = { email, percent};
-        const new_split_list = [...split_list, new_item];
-        const actualPercent = this.totalPercent(new_split_list);
-        const validateInputs = { email, percent: this.validateTotalPercent(new_split_list, percent) };
+        const newSplitList = [...splitList, new_item];
+        const actualPercent = this.totalPercent(newSplitList);
 
+        this.setState({splitList: newSplitList, email: "", percent: 0});
 
-        this.setState({split_list: new_split_list, email: "", percent: 0});
-
-        validateFormHelper(this.buttonload1, validateInputs);  
-        this.totalPercent(new_split_list)
-
+        this.buttonload1(true)
         if(actualPercent === 100){
             const splitInputs = { value }
             validateFormHelper(this.buttonload2, splitInputs);  
-        }
+        };
     };
 
     rmItemToSplitTable = (rmSplitItem: SplitItem) => {
-        const { split_list } = this.state;
-        const new_split_list = split_list.filter((splitItem: SplitItem) => splitItem !== rmSplitItem);
-        const actualPercent = this.totalPercent(new_split_list)
+        const { splitList } = this.state;
+        const newSplitList = splitList.filter((splitItem: SplitItem) => splitItem !== rmSplitItem);
+        const actualPercent = this.totalPercent(newSplitList)
         const verifyActualPercent = actualPercent !== 100? true : false
-        this.setState({split_list: new_split_list});
+        this.setState({splitList: newSplitList});
 
         this.setPercent(rmSplitItem.percent);
         this.setEmail(rmSplitItem.email);
         this.buttonload1(false)
-        this.totalPercent(new_split_list);
         this.buttonload2(verifyActualPercent)
     };
 
     render(){
-        const { totalPercent, email, value, percent, split_list, buttonLoad1, buttonLoad2, errors } = this.state
+        const { totalPercent, email, value, percent, splitList, buttonLoad1, buttonLoad2, errors } = this.state
         const formOne = [{
             label: "Email",
             value: email,
@@ -213,8 +208,8 @@ export default class Split extends Component<Props, State> {
                     </Form>
                     <Col md="7">
                         {
-                            split_list.length > 0 && 
-                            <SplitTable totalPercent={totalPercent} rmTableItem={this.rmItemToSplitTable} split_list={split_list}/>
+                            splitList.length > 0 && 
+                            <SplitTable totalPercent={totalPercent} rmTableItem={this.rmItemToSplitTable} split_list={splitList}/>
                         }
                     </Col>
                 </SplitContainerDelimiter>
