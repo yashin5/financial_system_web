@@ -65,7 +65,8 @@ export default class Split extends Component<Props, State> {
     email = (event: ChangeEvent<HTMLInputElement>) =>{
         const { split_list, percent } = this.state;
         const email = event.target.value;
-        const validateInputs = { email, percent: this.validateTotalPercent(split_list, percent) };
+        const totalPercent = percent > 0? this.validateTotalPercent(split_list, percent) : ""
+        const validateInputs = { email, percent: totalPercent };
 
         this.setEmail( email );
 
@@ -93,7 +94,8 @@ export default class Split extends Component<Props, State> {
         const { email, split_list } = this.state;
         const percent = event.target.value.replace("-", "");
         const percentFloat = parseFloat(percent);
-        const validateInputs = { email, percent: this.validateTotalPercent(split_list, percentFloat) };
+        const totalPercent = percentFloat > 0? this.validateTotalPercent(split_list, percentFloat) : ""
+        const validateInputs = { email, percent: totalPercent };
         this.setPercent( percentFloat );
                 
         return validateFormHelper(this.buttonload1, validateInputs)
