@@ -21,7 +21,9 @@ interface State{
     email: string,
     balance: string,
     currencies: Array<string>,
-    contact_list: Array<Contact>
+    contact_list: Array<Contact>,
+    currency: string,
+    currencyPrecision: number
 };
 
 interface Props{
@@ -35,14 +37,16 @@ export default class Dashboard extends Component<Props,State>{
             email: "",
             balance: "",
             currencies: [],
-            contact_list:[]
+            contact_list:[],
+            currency: "",
+            currencyPrecision: 0
         };
     };
 
     componentDidMount = () =>{
         getBalanceService()
         .then(res => res.ok? res.json() : console.log(res.statusText))
-        .then(res => this.setState({balance: res.value_in_account}));
+        .then(res => this.setState({balance: res.value_in_account.value, email: res.email}));
 
         getCurrenciesService()
         .then(res => res.ok? res.json() : console.log(res.statusText))
@@ -51,13 +55,6 @@ export default class Dashboard extends Component<Props,State>{
         getAllContactsService()
         .then(res => res.ok? res.json() : console.log(res.statusText))
         .then(res => this.setState({contact_list: res}))
-        this.setState({
-            email: "ysantos@stone.com.br",
-            // contact_list: [{
-            //     nickname: "Yashin Sants",
-            //     email: "ysantos@gmail.com",
-            // }]
-        });
     };
 
     balance = (new_balance: string) => {
