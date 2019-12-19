@@ -21,7 +21,9 @@ interface State{
     email: string,
     balance: string,
     currencies: Array<string>,
-    contact_list: Array<Contact>
+    contact_list: Array<Contact>,
+    currency_precision: number,
+    currency: string,
 };
 
 interface Props{
@@ -32,17 +34,24 @@ export default class Dashboard extends Component<Props,State>{
     constructor(props: State){
         super(props);
         this.state = {
-            email: "",
+            email: "...",
             balance: "",
             currencies: [],
-            contact_list:[]
+            contact_list:[],
+            currency: "",
+            currency_precision: 0
         };
     };
 
     componentDidMount = () =>{
         getBalanceService()
         .then(res => res.ok? res.json() : console.log(res.statusText))
-        .then(res => this.setState({balance: res.value_in_account}));
+        .then(res => this.setState({
+            email: res.email,
+            currency_precision: res.value_in_account.currency_precision,
+            balance: res.value_in_account.value,
+            currency: res.value_in_account.currency
+        }));
 
         getCurrenciesService()
         .then(res => res.ok? res.json() : console.log(res.statusText))
@@ -50,14 +59,7 @@ export default class Dashboard extends Component<Props,State>{
 
         getAllContactsService()
         .then(res => res.ok? res.json() : console.log(res.statusText))
-        .then(res => this.setState({contact_list: res}))
-        this.setState({
-            email: "ysantos@stone.com.br",
-            // contact_list: [{
-            //     nickname: "Yashin Sants",
-            //     email: "ysantos@gmail.com",
-            // }]
-        });
+        .then(res => this.setState({contact_list: res}));
     };
 
     balance = (new_balance: string) => {
@@ -70,26 +72,25 @@ export default class Dashboard extends Component<Props,State>{
             contact.contact_email !== new_contact.contact_email
         ));
 
-        const new_contact_list = [...verify_if_contact_already_exist, new_contact]
-        console.log(new_contact_list)
+        const new_contact_list = [...verify_if_contact_already_exist, new_contact];
             
         this.setState({contact_list: new_contact_list});
     };
 
     render(){
-        const { email, balance, currencies, contact_list} = this.state
+        const { currency_precision, email, balance, currencies, contact_list, currency} = this.state
 
         return(
             <BrowserRouter>
                 <Container>
                     <Header email={email}/>    
                     <NavigationFunctions/>     
-                    <AccountBalance balance={balance} />  
+                    <AccountBalance balance={balance} currency={currency}/>  
                         <Switch>
-                            <Route exact path="/withdraw" component={() => <Withdraw new_balance={this.balance}/>} />
-                            <Route exact path="/deposit" component={() => <Deposit currencies={currencies} new_balance={this.balance}/>} />
-                            <Route exact path="/transfer" component={() => <Transfer new_balance={this.balance}/>} />
-                            <Route exact path="/split" component={() => <Split  new_balance={this.balance}/>} />
+                            <Route exact path="/withdraw" component={() => <Withdraw currency_precision={currency_precision} new_balance={this.balance}/>} />
+                            <Route exact path="/deposit" component={() => <Deposit currency_precision={currency_precision} currencies={currencies} new_balance={this.balance}/>} />
+                            <Route exact path="/transfer" component={() => <Transfer currency_precision={currency_precision} new_balance={this.balance}/>} />
+                            <Route exact path="/split" component={() => <Split  currency_precision={currency_precision} new_balance={this.balance}/>} />
                             <Route exact path="/contacts" component={() => <AddContact create_contact={this.createNewContact} contact_list={contact_list} />} />
                         </Switch>
                 </Container>

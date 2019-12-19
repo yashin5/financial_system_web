@@ -19,7 +19,8 @@ interface State {
 
 interface Props{
     new_balance: Function,
-    currencies: Array<string>
+    currencies: Array<string>,
+    currency_precision: number,
 };
 
 export default class Deposit extends Component<Props, State> {
@@ -84,9 +85,9 @@ export default class Deposit extends Component<Props, State> {
             onChange: this.value,
             type: "text",
             maskMoney: true,
-            precision: 2
+            precision: this.props.currency_precision
         }];
-
+        console.log(this.props.currency_precision)
         const formTwo = [{
             label: "Currency",
             value: currency,
