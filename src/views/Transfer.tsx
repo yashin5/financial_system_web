@@ -18,6 +18,7 @@ interface State {
 
 interface Props{
     new_balance: Function,
+    currency_precision: number,
 };
 
 export default class Deposit extends Component<Props, State> {
@@ -87,7 +88,7 @@ export default class Deposit extends Component<Props, State> {
             onChange: this.value,
             type: "text",
             maskMoney: true,
-            precision: 2
+            precision: this.props.currency_precision
         }];
 
         return(

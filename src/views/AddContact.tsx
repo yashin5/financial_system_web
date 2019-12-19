@@ -7,9 +7,7 @@ import ContactsTable from '../components/ContactsTable';
 import Buttons from '../components/Buttons'
 import { validateFormHelper } from '../helpers/validateFormHelper'
 import { addContactService, updateContactService } from '../services/serviceApi'
-
-
-
+import Errors from '../components/Errors'
 
 interface Contact {
     contact_nickname: string,
@@ -21,7 +19,8 @@ interface State {
     nickname: string,
     buttonLoad1: boolean,
     buttonLoad2: boolean,
-    errors: Array<string>
+    errors: Array<string>,
+    errors2: Array<string>
 };
 
 interface Props{
@@ -38,6 +37,7 @@ export default class AddContact extends Component<Props, State> {
             buttonLoad1: true,
             buttonLoad2: true,
             errors: [""],
+            errors2: [""],
         };
     };
 
@@ -118,7 +118,7 @@ export default class AddContact extends Component<Props, State> {
         .then(res => res.json())
         .then(res => {
             if(res.error){
-                this.setState({errors: [res.error]})
+                this.setState({errors2: [res.error]})
             } 
             else{
                 create_contact({ contact_nickname: nickname, contact_email: email });    
@@ -127,7 +127,7 @@ export default class AddContact extends Component<Props, State> {
     };
 
     render(){
-        const { errors, email, nickname, buttonLoad1, buttonLoad2 } = this.state;
+        const { errors, errors2, email, nickname, buttonLoad1, buttonLoad2 } = this.state;
         const { contact_list } = this.props;
         const formOne = [
             {
@@ -160,21 +160,13 @@ export default class AddContact extends Component<Props, State> {
                                     <Buttons buttonLoad={buttonLoad1} type="submit" color="success"
                                         size="sm" value="Create contact" 
                                     />
-                                    {
-                                        errors && errors.map(error => 
-                                            <SpanStyled>{error}</SpanStyled>
-                                        )
-                                    }
+                                    <Errors  errors ={errors}/>
                                 </ErrorsDiv>    
                                 <ErrorsDiv>
                                     <Buttons onClick={this.updateContact} buttonLoad={buttonLoad2} value="Update contact"
                                         type="button" color="secondary" size="sm"
-                                    />
-                                    {
-                                        false && errors.map(error => 
-                                            <SpanStyled>{error}</SpanStyled>
-                                        )
-                                    }
+                                    />                        
+                                    <Errors errors ={errors2}/>            
                                 </ErrorsDiv>                                
                             </ButtonContainerTwo>
                         </ButtonContainer>
@@ -191,14 +183,10 @@ export default class AddContact extends Component<Props, State> {
 
 const ErrorsDiv = styled.div`
     display: flex;
-    flex-direction: column
-`
-const SpanStyled = styled.span`
-    font-size: 0.6rem;
-    color: red
+    flex-direction: column;
 `;
 
-const flex = {display: "flex"}
+const flex = {display: "flex"};
 
 const ButtonContainer = styled.div`
     display: flex;

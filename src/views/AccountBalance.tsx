@@ -3,7 +3,8 @@ import {Col, Row} from 'reactstrap'
 import styled from 'styled-components'
 
 interface Props{
-    balance: string;
+    balance: string,
+    currency: string,
 };
 
 const AccountBalance = (props: Props) => {
@@ -14,7 +15,7 @@ const AccountBalance = (props: Props) => {
                     <AccountBalanceMessage>Account balance:</AccountBalanceMessage>
                 </Col>
                 <Col md="6">
-                    <Balance>{props.balance}</Balance>
+                    <Balance>{props.balance} {props.currency}</Balance>
                 </Col>
             </Row>
         </AccountBalanceContainer>
