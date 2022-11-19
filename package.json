@@ -18,7 +18,7 @@
     "react-feather": "^2.0.3",
     "react-router": "^5.1.0",
     "react-router-dom": "^5.1.0",
-    "react-scripts": "3.2.0",
+    "react-scripts": "3.4.4",
     "reactstrap": "^8.1.1",
     "styled-components": "^4.4.1",
     "typescript": "3.6.4"
